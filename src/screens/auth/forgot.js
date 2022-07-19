@@ -36,7 +36,7 @@ const Forgot = ({navigation}) => {
       });
       setTimeout(() => {
         setSuccess(true);
-      }, 5000);
+      }, 2000);
       console.log(result.data);
     } catch (error) {
       setLoading(false);
