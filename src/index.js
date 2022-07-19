@@ -11,9 +11,12 @@ import Forgot from './screens/auth/forgot';
 import Reset from './screens/auth/reset';
 import MyDrawer from './screens/drawer';
 import ProfilePage from './screens/home/profilePage';
-import OrderPage from './screens/home/orderPage';
 import {useSelector} from 'react-redux';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import ProductDetails from './screens/home/productDetails';
+import Cart from './screens/home/cart';
+import PaymentPage from './screens/home/paymentPage';
+import DeliveryPage from './screens/home/deliveryPage';
 
 const DrawerRouter = () => {
   const Drawer = createDrawerNavigator();
@@ -52,7 +55,7 @@ const DrawerRouter = () => {
       />
       <Drawer.Screen
         name="Orders"
-        component={OrderPage}
+        component={Cart}
         options={{
           drawerIcon: ({color}) => (
             <MaterialIcons name="shopping-cart" size={22} color={color} />
@@ -83,6 +86,22 @@ const Router = () => {
         component={DrawerRouter}
       />
       <Screen options={{headerShown: false}} name="auth" component={Auth} />
+      <Screen
+        options={{headerShown: true}}
+        name="details"
+        component={ProductDetails}
+      />
+      <Screen options={{headerShown: true}} name="cart" component={Cart} />
+      <Screen
+        options={{headerShown: true}}
+        name="checkout"
+        component={DeliveryPage}
+      />
+      <Screen
+        options={{headerShown: true}}
+        name="payment"
+        component={PaymentPage}
+      />
     </Navigator>
   );
 };
