@@ -1,7 +1,9 @@
+/* eslint-disable react-native/no-inline-styles */
 import {Image, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import {useDispatch, useSelector} from 'react-redux';
+import React, {useState} from 'react';
+import {useSelector} from 'react-redux';
 import {currencyFormatter} from '../../helpers/formatter';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
 const Cart = ({navigation}) => {
   const [quantity, setQuantity] = useState(1);
@@ -15,9 +17,10 @@ const Cart = ({navigation}) => {
       setQuantity(quantity - 1);
     }
   };
-  let subtotal = Array.isArray(cart).product_price * quantity;
+  let subtotal = cart?.product_price * quantity;
   let tax = subtotal * 0.1;
   let total = subtotal + tax;
+  // console.log(Array.isArray(cart));
 
   const handlerCheckout = () => {
     navigation.navigate('checkout', {
@@ -31,7 +34,7 @@ const Cart = ({navigation}) => {
 
   return (
     <View style={styles.container}>
-      {Array.isArray(cart) ? (
+      {cart ? (
         <>
           <View>
             <View style={styles.productContainer}>
@@ -39,7 +42,7 @@ const Cart = ({navigation}) => {
                 <View style={styles.imageWrapper}>
                   <Image
                     style={styles.img}
-                    source={{uri: Array.isArray(cart).product_image}}
+                    source={cart && {uri: cart.product_image}}
                     resizeMode="cover"
                   />
                   <Text
@@ -50,9 +53,7 @@ const Cart = ({navigation}) => {
                       color: '#6A4029',
                       textAlign: 'center',
                     }}>
-                    {currencyFormatter.format(
-                      Array.isArray(cart)?.product_price,
-                    )}
+                    {currencyFormatter.format(cart?.product_price)}
                   </Text>
                 </View>
                 <View style={styles.wrapperQuan}>
@@ -63,7 +64,7 @@ const Cart = ({navigation}) => {
                       textAlign: 'center',
                       color: '#6A4029',
                     }}>
-                    {Array.isArray(cart).product_name}
+                    {cart?.product_name}
                   </Text>
                   <View style={styles.valueWrapper}>
                     <TouchableOpacity
@@ -175,8 +176,17 @@ const Cart = ({navigation}) => {
       ) : (
         <>
           <View style={styles.infoWrapperBottom}>
-            <View style={styles.infoWrapper2}>
-              <Text style={styles.infoKey2}>Your Cart is Empty :(</Text>
+            <View style={styles.infoWrapper3}>
+              <FeatherIcon
+                name="shopping-cart"
+                size={100}
+                color="grey"
+                style={{marginRight: 25}}
+              />
+              <Text style={styles.infoKey2}>No orders yet :(</Text>
+              <Text style={styles.infoValue3}>
+                Hit the yellow button down below to Create an order
+              </Text>
             </View>
             <View
               style={{
@@ -277,8 +287,13 @@ const styles = StyleSheet.create({
   },
   infoWrapper2: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'space-between',
+    flexDirection: 'row',
+  },
+  infoWrapper3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   infoKey: {
     fontFamily: 'Poppins-SemiBold',
@@ -291,6 +306,8 @@ const styles = StyleSheet.create({
     color: '#000',
   },
   infoKey2: {
+    alignItems: 'center',
+    textAlign: 'center',
     fontSize: 25,
     fontFamily: 'Poppins-Bold',
     color: '#000',
@@ -299,6 +316,12 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Poppins-Bold',
     color: '#000',
+  },
+  infoValue3: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Poppins-Medium',
+    color: 'grey',
   },
   quantity: {
     fontFamily: 'Poppins-Bold',

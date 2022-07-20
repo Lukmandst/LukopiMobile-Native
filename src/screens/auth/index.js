@@ -1,3 +1,4 @@
+/* eslint-disable react-native/no-inline-styles */
 import {
   View,
   Text,
@@ -45,7 +46,7 @@ const Auth = ({navigation}) => {
                 fontSize: 16,
                 textAlign: 'center',
               }}>
-              Get a cup of coffee for free{`\n`}every sunday morning
+              Get a cup of coffee for free{'\n'}every sunday morning
             </Text>
           </View>
           <View>

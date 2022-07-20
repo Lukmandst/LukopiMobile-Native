@@ -1,7 +1,7 @@
 import {ADD_TO_CART1, RESET_CART} from '../actions/cartActions';
 
 const initialState = {
-  cart: [],
+  cart: false,
 };
 
 const cartReducer = (prevState = initialState, action) => {

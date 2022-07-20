@@ -47,8 +47,8 @@ const PaymentPage = ({navigation, route}) => {
       setLoading(false);
       Toast.show({
         type: 'success',
-        text1: 'Request Success! 🙌',
-        text2: `${result.data.msg} 👋`,
+        text1: 'Transaction Success! 🙌',
+        text2: 'Thank you for your purchase! 👋',
       });
       setTimeout(() => {
         dispatch(resetCart());
@@ -66,96 +66,110 @@ const PaymentPage = ({navigation, route}) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitle}>Products</Text>
-      </View>
-      <View style={styles.card}>
-        <Image
-          source={{uri: cart.product_image}}
-          style={styles.img}
-          resizeMode="cover"
-        />
-        <View style={styles.productInfo}>
-          <Text style={styles.item}>
-            {cart.product_name ? cart.product_name : 'Hazelnut Latte'}
-          </Text>
-          <Text style={styles.item}>{`x${quantity}`}</Text>
-          <Text style={styles.item}>{cart.size}</Text>
-        </View>
-        <Text style={styles.price}>{currencyFormatter.format(subtotal1)}</Text>
-      </View>
-      <View style={styles.subtitleContainer}>
-        <Text style={styles.subtitle}>Payment method</Text>
-      </View>
-      <View style={styles.methodCard}>
-        <Text style={styles.delivery} onPress={() => setPayment('card')}>
-          <Octicons
-            name={payment === 'card' ? 'dot-fill' : 'dot'}
-            size={15}
-            color={'#6A4029'}
-          />{' '}
-          Card
-        </Text>
-        <View style={styles.border} />
-        <Text style={styles.delivery} onPress={() => setPayment('bank')}>
-          <Octicons
-            name={payment === 'bank' ? 'dot-fill' : 'dot'}
-            size={15}
-            color={'#6A4029'}
-          />{' '}
-          Bank account
-        </Text>
-        <View style={styles.border} />
-        <Text style={styles.delivery} onPress={() => setPayment('cod')}>
-          <Octicons
-            name={payment === 'cod' ? 'dot-fill' : 'dot'}
-            size={15}
-            color={'#6A4029'}
-          />{' '}
-          Cash on delivery
-        </Text>
-      </View>
-      <View style={styles.infoWrapperBottom}>
-        <View style={styles.infoWrapper2}>
-          <Text style={styles.infoKey2}>Total :</Text>
-          <Text style={styles.infoValue2}>
-            {currencyFormatter.format(finalTotal)}
-          </Text>
-        </View>
-        <View
-          style={{
-            // marginTop: 10,
-            paddingLeft: 10,
-            paddingRight: 10,
-            flexDirection: 'row',
-            // marginBottom: 15,
-          }}>
-          <TouchableOpacity
-            onPress={paymentHandler}
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              backgroundColor: '#6A4029',
-              padding: 10,
-              borderRadius: 20,
-              height: 70,
-              flex: 1,
-            }}>
-            {loading ? (
-              <ActivityIndicator size={'large'} color="#fff" />
-            ) : (
-              <Text
-                style={{
-                  fontFamily: 'Poppins-Bold',
-                  fontSize: 16,
-                  color: '#fff',
-                }}>
-                Proceed to Payment
+      {cart ? (
+        <>
+          <View style={styles.subtitleContainer}>
+            <Text style={styles.subtitle}>Products</Text>
+          </View>
+          <View style={styles.card}>
+            <Image
+              source={{uri: cart.product_image}}
+              style={styles.img}
+              resizeMode="cover"
+            />
+            <View style={styles.productInfo}>
+              <Text style={styles.item}>
+                {cart.product_name ? cart.product_name : 'Hazelnut Latte'}
               </Text>
-            )}
-          </TouchableOpacity>
-        </View>
-      </View>
+              <Text style={styles.item}>{`x${quantity}`}</Text>
+              <Text style={styles.item}>{cart.size}</Text>
+            </View>
+            <Text style={styles.price}>
+              {currencyFormatter.format(subtotal1)}
+            </Text>
+          </View>
+          <View style={styles.subtitleContainer}>
+            <Text style={styles.subtitle}>Payment method</Text>
+          </View>
+          <View style={styles.methodCard}>
+            <TouchableOpacity
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => setPayment('card')}>
+              <Octicons
+                name={payment === 'card' ? 'dot-fill' : 'dot'}
+                size={25}
+                color={'#6A4029'}
+              />
+              <Text style={styles.delivery}>Card</Text>
+            </TouchableOpacity>
+            <View style={styles.border} />
+            <TouchableOpacity
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => setPayment('bank')}>
+              <Octicons
+                name={payment === 'bank' ? 'dot-fill' : 'dot'}
+                size={25}
+                color={'#6A4029'}
+              />
+              <Text style={styles.delivery}>Bank account</Text>
+            </TouchableOpacity>
+            <View style={styles.border} />
+            <TouchableOpacity
+              style={{flexDirection: 'row', alignItems: 'center'}}
+              onPress={() => setPayment('cod')}>
+              <Octicons
+                name={payment === 'cod' ? 'dot-fill' : 'dot'}
+                size={25}
+                color={'#6A4029'}
+              />
+              <Text style={styles.delivery}>Cash on delivery</Text>
+            </TouchableOpacity>
+          </View>
+          <View style={styles.infoWrapperBottom}>
+            <View style={styles.infoWrapper2}>
+              <Text style={styles.infoKey2}>Total :</Text>
+              <Text style={styles.infoValue2}>
+                {currencyFormatter.format(finalTotal)}
+              </Text>
+            </View>
+            <View
+              style={{
+                // marginTop: 10,
+                // paddingLeft: 10,
+                // paddingRight: 10,
+                flexDirection: 'row',
+                // marginBottom: 15,
+              }}>
+              <TouchableOpacity
+                onPress={paymentHandler}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#6A4029',
+                  padding: 10,
+                  borderRadius: 20,
+                  height: 70,
+                  flex: 1,
+                }}>
+                {loading ? (
+                  <ActivityIndicator size={'large'} color="#fff" />
+                ) : (
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Bold',
+                      fontSize: 16,
+                      color: '#fff',
+                    }}>
+                    Proceed to Payment
+                  </Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          </View>
+        </>
+      ) : (
+        <></>
+      )}
     </View>
   );
 };
@@ -195,10 +209,10 @@ const styles = StyleSheet.create({
     elevation: 10,
     padding: 5,
     flex: 1,
-    alignSelf: 'center',
+    // alignSelf: 'center',
     backgroundColor: '#ffffff',
     paddingHorizontal: '5%',
-    paddingVertical: 20,
+    // paddingVertical: 20,
     borderRadius: 15,
     marginBottom: 20,
     display: 'flex',
@@ -218,8 +232,9 @@ const styles = StyleSheet.create({
   },
   methodCard: {
     elevation: 10,
-    width: '90%',
-    alignSelf: 'center',
+    flex: 1,
+    // width: '90%',
+    // alignSelf: 'center',
     backgroundColor: '#ffffff',
     paddingHorizontal: '5%',
     paddingVertical: 20,
@@ -237,6 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 17,
     color: '#000000',
     marginVertical: 5,
+    marginLeft: 15,
   },
   paymentBtn: {
     backgroundColor: '#6A4029',

@@ -12,6 +12,7 @@ import React, {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
 import {DrawerItemList} from '@react-navigation/drawer';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import Foundation from 'react-native-vector-icons/Foundation';
 import axios from 'axios';
 import {HOST_API} from '@env';
 import Toast from 'react-native-toast-message';
@@ -88,19 +89,35 @@ const MyDrawer = props => {
           </View>
         </TouchableOpacity>
       ) : (
-        <TouchableOpacity
-          style={{marginBottom: 30}}
-          onPress={() => props.navigation.navigate('signin')}>
-          <View style={styles.logoutCont}>
-            <MaterialIcons
-              name="login"
-              size={22}
-              color="#6A4029"
-              style={{marginEnd: 15}}
-            />
-            <Text style={styles.logout}>Log In</Text>
-          </View>
-        </TouchableOpacity>
+        <View
+          style={{alignItems: 'flex-start', justifyContent: 'space-around'}}>
+          <TouchableOpacity
+            style={{marginBottom: 30}}
+            onPress={() => props.navigation.navigate('signin')}>
+            <View style={styles.logoutCont}>
+              <MaterialIcons
+                name="login"
+                size={22}
+                color="#6A4029"
+                style={{marginEnd: 15}}
+              />
+              <Text style={styles.logout}>Log In</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={{marginBottom: 30}}
+            onPress={() => props.navigation.navigate('signup')}>
+            <View style={styles.logoutCont}>
+              <Foundation
+                name="clipboard-notes"
+                size={22}
+                color="#6A4029"
+                style={{marginEnd: 15}}
+              />
+              <Text style={styles.logout}>Sign Up</Text>
+            </View>
+          </TouchableOpacity>
+        </View>
       )}
       <Modal
         animationType="fade"

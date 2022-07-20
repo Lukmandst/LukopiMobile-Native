@@ -17,6 +17,7 @@ import ProductDetails from './screens/home/productDetails';
 import Cart from './screens/home/cart';
 import PaymentPage from './screens/home/paymentPage';
 import DeliveryPage from './screens/home/deliveryPage';
+import SeeMorePage from './screens/home/seeMorePage';
 
 const DrawerRouter = () => {
   const Drawer = createDrawerNavigator();
@@ -101,6 +102,11 @@ const Router = () => {
         options={{headerShown: true}}
         name="payment"
         component={PaymentPage}
+      />
+      <Screen
+        name="seeMore"
+        component={SeeMorePage}
+        options={({route}) => ({title: route.params?.title})}
       />
     </Navigator>
   );

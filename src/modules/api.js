@@ -16,6 +16,20 @@ export function GetUser(token) {
     isError: error,
   };
 }
+export function GetHistory(token) {
+  const {data, error} = useSWR(
+    [`${HOST_API}/transaction/history`, token],
+    fetcher,
+    {
+      refreshInterval: 1000,
+    },
+  );
+  return {
+    history: data,
+    loadingHistory: !error && !data,
+    errorHistory: error,
+  };
+}
 export function GetFavProduct() {
   const {data, error} = useSWR([`${HOST_API}/transaction/favorite`], fetcher2);
   return {
