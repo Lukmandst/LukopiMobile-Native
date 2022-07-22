@@ -25,7 +25,7 @@ const Signin = ({navigation}) => {
   const [eye, setEye] = useState(false);
   // const [loading, setLoading] = useState(false);
   const {loading, token, errorMsg} = useSelector(state => state.auth);
-  console.log(token);
+  // console.log(token);
 
   const dispatch = useDispatch();
   const loginHandler = () => {

@@ -44,20 +44,22 @@ const ProfilePage = ({navigation}) => {
   return (
     <View style={styles.container}>
       <View style={styles.headerWrapper}>
-        <TouchableOpacity style={styles.editIcon}>
-          <Ionicon name="pencil" size={15} color="#fff" />
-        </TouchableOpacity>
-        <Image
-          resizeMode="cover"
-          style={styles.profileImg}
-          source={
-            !user[0].picture
-              ? require('../../assets/images/defaultImage.png')
-              : {
-                  uri: `${user[0].picture}`,
-                }
-          }
-        />
+        <View style={{position: 'relative'}}>
+          <TouchableOpacity style={styles.editIcon}>
+            <Ionicon name="pencil" size={15} color="#fff" />
+          </TouchableOpacity>
+          <Image
+            resizeMode="cover"
+            style={styles.profileImg}
+            source={
+              !user[0].picture
+                ? require('../../assets/images/defaultImage.png')
+                : {
+                    uri: `${user[0].picture}`,
+                  }
+            }
+          />
+        </View>
         <Text style={styles.name}>
           {!user[0].display_name ? 'Hi Fellas!' : user[0].display_name}
         </Text>
@@ -98,7 +100,7 @@ const ProfilePage = ({navigation}) => {
             horizontal={true}
             data={history}
             renderItem={renderItem}
-            keyExtractor={({index}) => index}
+            keyExtractor={({item, index}) => index}
             initialNumToRender={5}
             maxToRenderPerBatch={10}
           />
@@ -240,6 +242,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
   },
   headerWrapper: {
+    justifyContent: 'center',
     position: 'relative',
     flex: 1,
     // backgroundColor: 'red',
@@ -251,8 +254,8 @@ const styles = StyleSheet.create({
     zIndex: 100,
     position: 'absolute',
     top: 70,
-    left: 200,
-    // right: 50,
+    // left: 200,
+    right: 0,
     justifyContent: 'center',
     alignItems: 'center',
     width: 30,
