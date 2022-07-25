@@ -21,7 +21,7 @@ const Signup = ({navigation}) => {
   const [body, setBody] = useState({
     email: '',
     pass: '',
-    phone: '',
+    phone_number: '',
   });
 
   const registHandler = async () => {
@@ -144,6 +144,7 @@ const Signup = ({navigation}) => {
                   })
                 }
                 placeholder="Enter your password"
+                autoCapitalize="none"
                 secureTextEntry={!eye}
                 autoComplete="password"
                 placeholderTextColor={'rgba(151, 151, 151, 1)'}

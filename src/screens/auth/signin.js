@@ -48,7 +48,7 @@ const Signin = ({navigation}) => {
   };
   useEffect(() => {
     if (token) {
-      navigation.navigate('HomeScreen');
+      navigation.replace('HomeScreen');
     }
     if (errorMsg) {
       Toast.show({
@@ -123,6 +123,7 @@ const Signin = ({navigation}) => {
                   })
                 }
                 placeholder="Enter your password"
+                autoCapitalize="none"
                 secureTextEntry={!eye}
                 autoComplete="password"
                 placeholderTextColor={'rgba(151, 151, 151, 1)'}

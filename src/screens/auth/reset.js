@@ -157,6 +157,7 @@ const Reset = ({route, navigation}) => {
                   value={newPass}
                   onChangeText={value => setNewPass(value)}
                   placeholder="Enter your new password"
+                  autoCapitalize="none"
                   secureTextEntry={!eye}
                   autoComplete="password"
                   placeholderTextColor={'rgba(151, 151, 151, 1)'}
@@ -180,6 +181,7 @@ const Reset = ({route, navigation}) => {
                   value={confirmPass}
                   onChangeText={value => setConfirmPass(value)}
                   placeholder="Confirm your new password"
+                  autoCapitalize="none"
                   secureTextEntry={!eye1}
                   autoComplete="password"
                   placeholderTextColor={'rgba(151, 151, 151, 1)'}
