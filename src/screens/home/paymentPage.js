@@ -14,6 +14,8 @@ import axios from 'axios';
 import {HOST_API} from '@env';
 import Toast from 'react-native-toast-message';
 import {resetCart} from '../../redux/actions/cartActions';
+import {sendLocalNotification} from '../../helpers/notification';
+import Header from '../../components/header';
 
 const PaymentPage = ({navigation, route}) => {
   const [payment, setPayment] = useState('');
@@ -36,6 +38,7 @@ const PaymentPage = ({navigation, route}) => {
       delivery: delivery,
       total_price: finalTotal,
     };
+    console.log(body);
     try {
       setLoading(true);
       const result = await axios({
@@ -45,14 +48,18 @@ const PaymentPage = ({navigation, route}) => {
         data: body,
       });
       setLoading(false);
-      Toast.show({
-        type: 'success',
-        text1: 'Transaction Success! 🙌',
-        text2: 'Thank you for your purchase! 👋',
-      });
+      // Toast.show({
+      //   type: 'success',
+      //   text1: 'Transaction Success! 🙌',
+      //   text2: 'Thank you for your purchase! 👋',
+      // });
+      sendLocalNotification(
+        'Transaction Success! 🙌',
+        'Thank you for your purchase! 👋',
+      );
       setTimeout(() => {
         dispatch(resetCart());
-        navigation.navigate('Profile');
+        navigation.navigate('history');
       }, 2000);
     } catch (error) {
       setLoading(false);
@@ -66,6 +73,8 @@ const PaymentPage = ({navigation, route}) => {
   };
   return (
     <View style={styles.container}>
+      <Header navigation={navigation} title="Payment" />
+
       {cart ? (
         <>
           <View style={styles.subtitleContainer}>
@@ -93,7 +102,7 @@ const PaymentPage = ({navigation, route}) => {
           </View>
           <View style={styles.methodCard}>
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={styles.deliveryValWrapper}
               onPress={() => setPayment('card')}>
               <Octicons
                 name={payment === 'card' ? 'dot-fill' : 'dot'}
@@ -104,7 +113,7 @@ const PaymentPage = ({navigation, route}) => {
             </TouchableOpacity>
             <View style={styles.border} />
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={styles.deliveryValWrapper}
               onPress={() => setPayment('bank')}>
               <Octicons
                 name={payment === 'bank' ? 'dot-fill' : 'dot'}
@@ -115,7 +124,7 @@ const PaymentPage = ({navigation, route}) => {
             </TouchableOpacity>
             <View style={styles.border} />
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={styles.deliveryValWrapper}
               onPress={() => setPayment('cod')}>
               <Octicons
                 name={payment === 'cod' ? 'dot-fill' : 'dot'}
@@ -208,7 +217,7 @@ const styles = StyleSheet.create({
   card: {
     elevation: 10,
     padding: 5,
-    flex: 1,
+    flex: 0.5,
     // alignSelf: 'center',
     backgroundColor: '#ffffff',
     paddingHorizontal: '5%',
@@ -233,6 +242,7 @@ const styles = StyleSheet.create({
   methodCard: {
     elevation: 10,
     flex: 1,
+    justifyContent: 'space-around',
     // width: '90%',
     // alignSelf: 'center',
     backgroundColor: '#ffffff',
@@ -279,7 +289,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   infoWrapperBottom: {
-    flex: 1,
+    flex: 0.5,
     paddingHorizontal: 20,
     // padding: 20,
   },
@@ -297,5 +307,11 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontFamily: 'Poppins-Bold',
     color: '#000',
+  },
+  deliveryValWrapper: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+    // backgroundColor: 'grey',
   },
 });
