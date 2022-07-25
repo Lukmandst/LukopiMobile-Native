@@ -38,7 +38,7 @@ export function GetFavProduct() {
     isError: error,
   };
 }
-export function GetAllProduct() {
+export function GetAllProduct(sort, filter) {
   const {data, error} = useSWR(
     [`${HOST_API}/product/all?order=ASC&sort=name`],
     fetcher2,
@@ -49,10 +49,10 @@ export function GetAllProduct() {
     isError: error,
   };
 }
-export function GetCoffeeProduct() {
+export function GetCoffeeProduct(sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=07e88ba9-1a54-46ab-bf2c-3dc8831090a4&order=ASC&sort=name`,
+      `${HOST_API}/product?category=07e88ba9-1a54-46ab-bf2c-3dc8831090a4&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
@@ -62,10 +62,10 @@ export function GetCoffeeProduct() {
     isError: error,
   };
 }
-export function GetNonCoffeeProduct() {
+export function GetNonCoffeeProduct(sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=30b95dde-a820-41dd-b474-902026e3e755&order=ASC&sort=name`,
+      `${HOST_API}/product?category=30b95dde-a820-41dd-b474-902026e3e755&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
@@ -75,10 +75,10 @@ export function GetNonCoffeeProduct() {
     isError: error,
   };
 }
-export function GetFoodsProduct() {
+export function GetFoodsProduct(sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=ea71bfcd-f1f1-4976-ae1e-9ff0f2c70d0e&order=ASC&sort=name`,
+      `${HOST_API}/product?category=ea71bfcd-f1f1-4976-ae1e-9ff0f2c70d0e&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
