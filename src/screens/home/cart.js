@@ -4,6 +4,7 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {currencyFormatter} from '../../helpers/formatter';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+import Header from '../../components/header';
 
 const Cart = ({navigation}) => {
   const [quantity, setQuantity] = useState(1);
@@ -34,6 +35,7 @@ const Cart = ({navigation}) => {
 
   return (
     <View style={styles.container}>
+      <Header navigation={navigation} title="Cart" />
       {cart ? (
         <>
           <View>
@@ -185,7 +187,7 @@ const Cart = ({navigation}) => {
               />
               <Text style={styles.infoKey2}>No orders yet :(</Text>
               <Text style={styles.infoValue3}>
-                Hit the yellow button down below to Create an order
+                Hit the button down below to create an order
               </Text>
             </View>
             <View
@@ -201,7 +203,7 @@ const Cart = ({navigation}) => {
                 style={{
                   justifyContent: 'center',
                   alignItems: 'center',
-                  backgroundColor: '#FFBA33',
+                  backgroundColor: '#6A4029',
                   padding: 10,
                   borderRadius: 20,
                   height: 70,
@@ -211,7 +213,7 @@ const Cart = ({navigation}) => {
                   style={{
                     fontFamily: 'Poppins-Bold',
                     fontSize: 16,
-                    color: '#6A4029',
+                    color: '#fff',
                   }}>
                   Start Ordering Now
                 </Text>
@@ -230,7 +232,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
-    paddingHorizontal: 25,
+    paddingHorizontal: 15,
     paddingVertical: 15,
   },
   productContainer: {

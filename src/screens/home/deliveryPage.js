@@ -2,17 +2,24 @@
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {currencyFormatter} from '../../helpers/formatter';
+import {currencyFormatter, formatPhoneNumber} from '../../helpers/formatter';
+import {useSelector} from 'react-redux';
+import {GetUser} from '../../modules/api';
+import Header from '../../components/header';
 
 const DeliveryPage = ({navigation, route}) => {
   const [delivery, setDelivery] = useState(false);
   const [method, setMethod] = useState('Dine In');
   const {subtotal1, tax1, total1, quantity} = route.params;
-  console.log(route.params);
+  const {token} = useSelector(state => state.auth);
+  const {user} = GetUser(token);
+  // console.log(route.params);
   let ship = delivery ? 10000 : 0;
   let finalTotal = total1 + ship;
   return (
     <View style={styles.container}>
+      <Header navigation={navigation} title="Checkout" />
+
       <Text style={{fontSize: 34, fontFamily: 'Poppins-Bold', color: '#000'}}>
         Delivery
       </Text>
@@ -24,11 +31,12 @@ const DeliveryPage = ({navigation, route}) => {
           </Text>
         </View>
         <View style={styles.addressInfo}>
-          <Text style={styles.textNormal}>Iskandar Street</Text>
+          <Text style={styles.textNormal}>{user[0].delivery_address}</Text>
+          <View style={styles.border} />
           <Text style={styles.textNormal}>
-            Km 5 refinery road oppsite re public road, effurun, Jakarta
+            {user[0].phone_number && formatPhoneNumber(user[0].phone_number)}
           </Text>
-          <Text style={styles.textNormal}>089978987908</Text>
+          <View style={styles.border} />
         </View>
       </View>
       <View style={styles.deliveryWrapper}>
@@ -40,44 +48,50 @@ const DeliveryPage = ({navigation, route}) => {
             onPress={() => {
               setDelivery(true);
               setMethod('Delivery');
-            }}>
-            <View style={styles.deliveryValWrapper}>
-              <Icon
-                name={delivery ? 'circle' : 'circle-o'}
-                style={{marginRight: 15}}
-                color={delivery && '#6A4029'}
-              />
-              <Text style={styles.textNormal}>Door Delivery</Text>
-            </View>
+            }}
+            style={styles.deliveryValWrapper}>
+            <Icon
+              name={delivery ? 'circle' : 'circle-o'}
+              style={{marginRight: 15}}
+              color={delivery && '#6A4029'}
+            />
+            <Text style={styles.textNormal}>Door Delivery</Text>
           </TouchableOpacity>
+          <View style={styles.border} />
           <TouchableOpacity
+            style={styles.deliveryValWrapper}
             onPress={() => {
               setDelivery(false);
               setMethod('Pick Up');
             }}>
-            <View style={styles.deliveryValWrapper}>
-              <Icon
-                name={method === 'Pick Up' ? 'circle' : 'circle-o'}
-                style={{marginRight: 15}}
-                color={method === 'Pick Up' && '#6A4029'}
-              />
-              <Text style={styles.textNormal}>Pick up at Store</Text>
-            </View>
+            <Icon
+              name={method === 'Pick Up' ? 'circle' : 'circle-o'}
+              style={{marginRight: 15}}
+              color={method === 'Pick Up' && '#6A4029'}
+            />
+            <Text
+              style={styles.textNormal}
+              onPress={() => {
+                setDelivery(false);
+                setMethod('Pick Up');
+              }}>
+              Pick up at Store
+            </Text>
           </TouchableOpacity>
+          <View style={styles.border} />
           <TouchableOpacity
+            style={styles.deliveryValWrapper}
             onPress={() => {
               setDelivery(false);
               setMethod('Dine In');
             }}>
-            <View style={styles.deliveryValWrapper}>
-              <Icon
-                name={method === 'Dine In' ? 'circle' : 'circle-o'}
-                solid="true"
-                color={method === 'Dine In' && '#6A4029'}
-                style={{marginRight: 15}}
-              />
-              <Text style={styles.textNormal}>Dine In</Text>
-            </View>
+            <Icon
+              name={method === 'Dine In' ? 'circle' : 'circle-o'}
+              solid="true"
+              color={method === 'Dine In' && '#6A4029'}
+              style={{marginRight: 15}}
+            />
+            <Text style={styles.textNormal}>Dine In</Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -138,11 +152,12 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     paddingVertical: 15,
-    paddingHorizontal: 25,
+    paddingHorizontal: 16,
   },
   infoWrapperBottom: {
-    flex: 1,
+    flex: 0.5,
     padding: 20,
+    // backgroundColor: 'blue',
   },
   infoWrapper2: {
     flex: 1,
@@ -165,6 +180,7 @@ const styles = StyleSheet.create({
   },
   addressWrapper: {
     flex: 1,
+    marginVertical: 20,
   },
   addressInfo: {
     flex: 1,
@@ -173,7 +189,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     paddingVertical: 15,
     paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
   },
   deliveryWrapper: {
     flex: 1,
@@ -185,20 +201,28 @@ const styles = StyleSheet.create({
     elevation: 10,
     paddingVertical: 15,
     paddingHorizontal: 20,
-    justifyContent: 'space-between',
+    justifyContent: 'space-around',
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: '#000000',
+    opacity: 0.1,
+    marginVertical: 5,
   },
   deliveryValWrapper: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: 'center',
+    // backgroundColor: 'grey',
   },
   textNormal: {
     fontFamily: 'Poppins-Medium',
     color: '#000',
-    fontSize: 14,
+    fontSize: 18,
   },
   textBold: {
     fontFamily: 'Poppins-Bold',
     color: '#000',
-    fontSize: 18,
+    fontSize: 20,
   },
 });

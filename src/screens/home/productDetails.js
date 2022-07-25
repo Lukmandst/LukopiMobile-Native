@@ -11,6 +11,7 @@ import {GetInfoProduct} from '../../modules/api';
 import {useDispatch} from 'react-redux';
 import {addItemToCart1} from '../../redux/actions/cartActions';
 import {currencyFormatter} from '../../helpers/formatter';
+import Header from '../../components/header';
 
 const ProductDetails = ({navigation, route}) => {
   const [size, setSize] = useState('Regular');
@@ -35,6 +36,11 @@ const ProductDetails = ({navigation, route}) => {
   };
   return (
     <View style={styles.container}>
+      <Header
+        navigation={navigation}
+        title={product && product[0].name}
+        color={'#fff'}
+      />
       {loadingProduct ? (
         <ActivityIndicator size={'large'} color="#fff" />
       ) : (
@@ -59,9 +65,13 @@ const ProductDetails = ({navigation, route}) => {
             </Text>
             <Text style={styles.infoValue}>{product[0].details}</Text>
           </View>
-          <View>
+          <View style={styles.footer}>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-around'}}>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                marginBottom: 30,
+              }}>
               <TouchableOpacity
                 style={size === 'Regular' ? styles.sizeActive : styles.size}
                 onPress={() => setSize('Regular')}>
@@ -187,11 +197,11 @@ export const styles = StyleSheet.create({
   name: {
     textAlign: 'center',
     fontFamily: 'Poppins-Bold',
-    fontSize: 20,
+    fontSize: 24,
     color: '#000',
   },
   infoWrapper: {
-    top: 150,
+    top: 180,
     left: 20,
     position: 'absolute',
     paddingHorizontal: 10,
@@ -199,10 +209,13 @@ export const styles = StyleSheet.create({
   infoValue: {
     fontFamily: 'Poppins-SemiBold',
     color: '#6A4029',
+    fontSize: 20,
   },
   infoValue2: {
     fontFamily: 'Poppins-Regular',
     color: '#6A4029',
+    fontSize: 18,
+    marginBottom: 20,
   },
   size: {
     elevation: 15,
@@ -221,5 +234,9 @@ export const styles = StyleSheet.create({
     backgroundColor: '#FFBA33',
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  footer: {
+    flex: 0.5,
+    // backgroundColor: 'red',
   },
 });

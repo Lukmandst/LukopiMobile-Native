@@ -2,21 +2,35 @@
 import {
   View,
   Text,
-  Pressable,
   FlatList,
   ActivityIndicator,
-  Image,
   ScrollView,
+  TextInput,
 } from 'react-native';
 import React, {useState} from 'react';
+import {StyleSheet} from 'react-native';
+import {
+  GetAllProduct,
+  GetCoffeeProduct,
+  GetFavProduct,
+  GetFoodsProduct,
+  GetNonCoffeeProduct,
+} from '../../modules/api';
+import CardComponent from '../../components/cardComponent';
+import Header from '../../components/headerDrawer';
+import HeaderDrawer from '../../components/headerDrawer';
+import FeatherIcon from 'react-native-vector-icons/Feather';
 
 const Home = props => {
   const [category, setCategory] = useState('Fav');
   const {Fav, loadingFav} = GetFavProduct();
-  const {All, loadingAll} = GetAllProduct();
-  const {Coffee, loadingCoffee} = GetCoffeeProduct();
-  const {NonCoffee, loadingNonCoffee} = GetNonCoffeeProduct();
-  const {Foods, loadingFoods} = GetFoodsProduct();
+  const {All, loadingAll} = GetAllProduct('ASC', 'created_at');
+  const {Coffee, loadingCoffee} = GetCoffeeProduct('ASC', 'created_at');
+  const {NonCoffee, loadingNonCoffee} = GetNonCoffeeProduct(
+    'ASC',
+    'created_at',
+  );
+  const {Foods, loadingFoods} = GetFoodsProduct('ASC', 'created_at');
   const anjay =
     category === 'Fav'
       ? ['Favourite', 'Coffee', 'Non Coffee', 'Foods', 'All Menu']
@@ -29,30 +43,35 @@ const Home = props => {
       : ['All Menu', 'Favourite', 'Coffee', 'Non Coffee', 'Foods'];
 
   // console.log(Fav);
-  const renderItem = ({item, index}) => {
-    return (
-      <Pressable
-        style={style.card}
-        onPress={() => props.navigation.navigate('details', {id: item.id})}>
-        <Image
-          style={style.cardImage}
-          resizeMode="cover"
-          source={{uri: item.image}}
-        />
-        <View style={style.cardInfo}>
-          <Text style={style.cardName}>{item.name}</Text>
-          <Text style={style.cardPrice}>
-            {currencyFormatter.format(item.price)}
-          </Text>
-        </View>
-      </Pressable>
-    );
-  };
+
   return (
     <ScrollView style={style.container}>
+      <HeaderDrawer navigation={props.navigation} />
       <Text style={{fontFamily: 'Poppins-Black', color: '#000', fontSize: 35}}>
         A good coffee is a good day
       </Text>
+      <View
+        style={{
+          position: 'relative',
+          paddingHorizontal: 15,
+          flexDirection: 'row',
+          backgroundColor: 'rgba(239, 238, 238, 1)',
+          borderRadius: 20,
+          flex: 1,
+          alignItems: 'center',
+          // justifyContent: 'center',
+        }}>
+        <FeatherIcon name="search" size={20} color="grey" />
+        <TextInput
+          placeholder="Search"
+          placeholderTextColor={'rgba(151, 151, 151, 1)'}
+          style={{
+            flex: 1,
+            fontFamily: 'Poppins-Medium',
+            color: '#000',
+          }}
+        />
+      </View>
       <View>
         <ScrollView contentContainerStyle={style.filterContainer}>
           <Text
@@ -144,7 +163,12 @@ const Home = props => {
                         ? Foods
                         : All
                     }
-                    renderItem={renderItem}
+                    renderItem={({item}) => (
+                      <CardComponent
+                        item={item}
+                        navigation={props.navigation}
+                      />
+                    )}
                     keyExtractor={item2 => item2.id}
                     initialNumToRender={5}
                     maxToRenderPerBatch={10}
@@ -339,23 +363,13 @@ const Home = props => {
 
 export default Home;
 
-import {StyleSheet} from 'react-native';
-import {
-  GetAllProduct,
-  GetCoffeeProduct,
-  GetFavProduct,
-  GetFoodsProduct,
-  GetNonCoffeeProduct,
-} from '../../modules/api';
-import {currencyFormatter} from '../../helpers/formatter';
-
 export const style = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F2F2F2',
+    backgroundColor: '#fff',
     // padding: 10,
     paddingHorizontal: 30,
-    paddingVertical: 30,
+    paddingVertical: 15,
     // justifyContent: 'space-between',
   },
   text: {
