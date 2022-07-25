@@ -11,13 +11,15 @@ const ProfileHeaderAfterLogin = () => {
   //   console.log(user && user[0].picture);
   useEffect(() => {
     if (isError) {
-      dispatch(resetAuth());
+      setTimeout(() => {
+        dispatch(resetAuth());
+      }, 2000);
     }
   }, [dispatch, isError]);
   return (
     <>
       <View style={styles.wrapper}>
-        {loadingUser ? (
+        {loadingUser || isError ? (
           <ActivityIndicator size={'large'} color="#fff" />
         ) : (
           <>
@@ -55,6 +57,9 @@ export const styles = StyleSheet.create({
     height: 130,
     borderRadius: 130,
     marginBottom: 10,
+    borderColor: 'rgba(175, 172, 174, 0.25)',
+    borderStyle: 'solid',
+    borderWidth: 2,
   },
   name: {
     fontSize: 18,

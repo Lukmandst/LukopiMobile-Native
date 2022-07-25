@@ -126,45 +126,44 @@ const MyDrawer = props => {
         transparent={true}>
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
-            <View>
-              <Text style={styles.warningTitle}>Warning!</Text>
-              <Text style={styles.bodyInfo}>Are you sure want to log out?</Text>
-              <View
-                style={{
-                  marginTop: 40,
-                  flex: 1,
-                  flexDirection: 'row',
-                  justifyContent: 'space-between',
-                }}>
-                <TouchableOpacity
-                  style={styles.secondaryBtn}
-                  onPress={logoutHandler}>
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    {loading ? (
-                      <ActivityIndicator size={'small'} color="#6A4029" />
-                    ) : (
-                      <Text style={styles.secBtnText}>Yes</Text>
-                    )}
-                  </View>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={styles.mainBtn}
-                  onPress={() => setModal(!modal)}>
-                  <View
-                    style={{
-                      flex: 1,
-                      justifyContent: 'center',
-                      alignItems: 'center',
-                    }}>
-                    <Text style={styles.mainBtnText}>No</Text>
-                  </View>
-                </TouchableOpacity>
-              </View>
+            <Text style={styles.warningTitle}>Warning!</Text>
+            <Text style={styles.bodyInfo}>Are you sure want to log out ?</Text>
+            <View
+              style={{
+                marginTop: 40,
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                // backgroundColor: 'red',
+              }}>
+              <TouchableOpacity
+                style={styles.secondaryBtn}
+                onPress={logoutHandler}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {loading ? (
+                    <ActivityIndicator size={'small'} color="#6A4029" />
+                  ) : (
+                    <Text style={styles.secBtnText}>Yes</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.mainBtn}
+                onPress={() => setModal(!modal)}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={styles.mainBtnText}>No</Text>
+                </View>
+              </TouchableOpacity>
             </View>
           </View>
         </View>
@@ -210,7 +209,7 @@ export const styles = StyleSheet.create({
     padding: 20,
   },
   logout: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: 'Poppins-SemiBold',
     color: '#6A4029',
     fontSize: 15,
   },
@@ -228,7 +227,7 @@ export const styles = StyleSheet.create({
     backgroundColor: '#F5F5F8',
     borderRadius: 20,
     padding: 25,
-    alignItems: 'center',
+    // alignItems: 'center',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -239,9 +238,13 @@ export const styles = StyleSheet.create({
     elevation: 5,
   },
   bodyInfo: {
+    flex: 1,
+    textAlign: 'center',
+    flexDirection: 'row',
     fontFamily: 'Poppins-Medium',
     fontSize: 18,
     color: '#000',
+    // backgroundColor: 'blue',
   },
   mainBtn: {
     width: 105,
