@@ -15,7 +15,7 @@ import {HOST_API} from '@env';
 import Toast from 'react-native-toast-message';
 import {resetCart} from '../../redux/actions/cartActions';
 import {sendLocalNotification} from '../../helpers/notification';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 
 const PaymentPage = ({navigation, route}) => {
   const [payment, setPayment] = useState('');

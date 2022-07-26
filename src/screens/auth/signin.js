@@ -48,7 +48,7 @@ const Signin = ({navigation}) => {
   };
   useEffect(() => {
     if (token) {
-      navigation.replace('HomeScreen');
+      navigation.reset({index: 0, routes: [{name: 'HomeScreen'}]});
     }
     if (errorMsg) {
       Toast.show({

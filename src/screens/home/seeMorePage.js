@@ -9,7 +9,7 @@ import {
   TouchableOpacity,
   View,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   GetAllProduct,
   GetCoffeeProduct,
@@ -20,22 +20,90 @@ import {
 import {FlatList} from 'react-native-gesture-handler';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import FAIcon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import CardComponent from '../../components/cardComponent';
 
 const SeeMorePage = ({navigation, route}) => {
+  const [limit, setLimit] = useState(5);
   const {title} = route.params;
   const [modal, setModal] = useState(false);
   const [sort, setSort] = useState('ASC');
   const [name, setName] = useState('');
+  const [nameAll, setNameAll] = useState('');
+  const [nameCoffee, setNameCoffee] = useState('');
+  const [nameNon, setNameNon] = useState('');
+  const [nameFoods, setNameFoods] = useState('');
   const [filter, setFilter] = useState('created_at');
+  const [data, setData] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const {Fav, loadingFav} = GetFavProduct();
-  const {All, loadingAll} = GetAllProduct(sort, filter);
-  const {Coffee, loadingCoffee} = GetCoffeeProduct(sort, filter);
-  const {NonCoffee, loadingNonCoffee} = GetNonCoffeeProduct(sort, filter);
-  const {Foods, loadingFoods} = GetFoodsProduct(sort, filter);
-  // console.log(name);
+  const {Fav, loadingFav} = GetFavProduct(name);
+  const {All, loadingAll, AllMeta} = GetAllProduct(
+    nameAll,
+    sort,
+    filter,
+    limit,
+  );
+  const {Coffee, loadingCoffee} = GetCoffeeProduct(nameCoffee, sort, filter);
+  const {NonCoffee, loadingNonCoffee} = GetNonCoffeeProduct(
+    nameNon,
+    sort,
+    filter,
+  );
+  const {Foods, loadingFoods} = GetFoodsProduct(nameFoods, sort, filter);
+  console.log(AllMeta);
+
+  const loadMore = () => {
+    if (!loading && data.length > 4 && AllMeta?.nextPage) {
+      setLimit(limit + 5);
+    }
+  };
+  useEffect(() => {
+    if (title === 'Favourite') {
+      if (!Fav) {
+        setLoading(true);
+      }
+      setLoading(false);
+      setData(Fav);
+    } else if (title === 'All Menu') {
+      if (!All) {
+        setLoading(true);
+      }
+      setLoading(false);
+      setData(All);
+    } else if (title === 'Coffee') {
+      if (!Coffee) {
+        setLoading(true);
+      }
+      setLoading(false);
+      setData(Coffee);
+    } else if (title === 'Foods') {
+      if (!Foods) {
+        setLoading(true);
+      }
+      setLoading(false);
+      setData(Foods);
+    } else {
+      if (!NonCoffee) {
+        setLoading(true);
+      }
+      setLoading(false);
+      setData(NonCoffee);
+    }
+  }, [
+    All,
+    Coffee,
+    Fav,
+    Foods,
+    NonCoffee,
+    // loadingAll,
+    // loadingCoffee,
+    // loadingFav,
+    // loadingFoods,
+    // loadingNonCoffee,
+    title,
+  ]);
   return (
     <View style={styles.container}>
       <View style={styles.customHeader}>
@@ -59,7 +127,16 @@ const SeeMorePage = ({navigation, route}) => {
           <FeatherIcon name="search" size={20} color="grey" />
           <TextInput
             onChangeText={value => {
-              setName(value);
+              title === 'Favourite'
+                ? setName(value)
+                : title === 'Coffee'
+                ? setNameCoffee(value)
+                : title === 'Non Coffee'
+                ? setNameNon(value)
+                : title === 'Foods'
+                ? setNameFoods(value)
+                : All;
+              setNameAll(value);
             }}
             placeholder="Search"
             placeholderTextColor={'rgba(151, 151, 151, 1)'}
@@ -113,29 +190,53 @@ const SeeMorePage = ({navigation, route}) => {
           </Pressable>
         )}
       </View>
-      {loadingFav ||
-      loadingAll ||
-      loadingCoffee ||
-      loadingFoods ||
-      loadingNonCoffee ? (
+      {loading ? (
+        //  (title === 'Favourite' && loadingFav) ||
+        //   (title === 'All Menu' && loadingAll) ||
+        //   (title === 'Coffee' && loadingCoffee) ||
+        //   (title === 'Foods' && loadingFoods) ||
+        //   (title === 'Non Coffee' && loadingNonCoffee)
         <ActivityIndicator size={'large'} color="#6A4029" />
+      ) : !data ? (
+        // (title === 'Favourite' && !Fav) ||
+        // (title === 'All Menu' && !All) ||
+        // (title === 'Coffee' && !Coffee) ||
+        // (title === 'Foods' && !Foods) ||
+        // (title === 'Non Coffee' && !NonCoffee)
+        <View style={styles.infoWrapperBottom}>
+          <View style={styles.infoWrapper3}>
+            <MaterialIcon
+              name="food-off-outline"
+              size={100}
+              color="grey"
+              style={{marginRight: 25}}
+            />
+            <Text style={styles.infoKey2}>Product Not Found :(</Text>
+            <Text style={styles.infoValue3}>
+              Sorry, the product you are looking for is currently unavailable{' '}
+            </Text>
+          </View>
+        </View>
       ) : (
         <FlatList
           numColumns={2}
           data={
-            title === 'Favourite'
-              ? Fav
-              : title === 'Coffee'
-              ? Coffee
-              : title === 'Non Coffee'
-              ? NonCoffee
-              : title === 'Foods'
-              ? Foods
-              : All
+            // title === 'Favourite'
+            //   ? Fav
+            //   : title === 'Coffee'
+            //   ? Coffee
+            //   : title === 'Non Coffee'
+            //   ? NonCoffee
+            //   : title === 'Foods'
+            //   ? Foods
+            //   : All
+            data
           }
           renderItem={({item}) => (
             <CardComponent item={item} navigation={navigation} />
           )}
+          onEndReachedThreshold={0.2}
+          onEndReached={loadMore}
           keyExtractor={item2 => item2.id}
           initialNumToRender={5}
           maxToRenderPerBatch={4}
@@ -449,5 +550,27 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 22,
     color: '#6A4029',
+  },
+  infoWrapperBottom: {
+    flex: 1,
+    padding: 20,
+  },
+  infoWrapper3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoKey2: {
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
+  },
+  infoValue3: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Poppins-Medium',
+    color: 'grey',
   },
 });

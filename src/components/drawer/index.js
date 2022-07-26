@@ -90,22 +90,13 @@ const MyDrawer = props => {
         </TouchableOpacity>
       ) : (
         <View
-          style={{alignItems: 'flex-start', justifyContent: 'space-around'}}>
+          style={{
+            flexDirection: 'row',
+            marginBottom: 25,
+            justifyContent: 'space-around',
+          }}>
           <TouchableOpacity
-            style={{marginBottom: 30}}
-            onPress={() => props.navigation.navigate('signin')}>
-            <View style={styles.logoutCont}>
-              <MaterialIcons
-                name="login"
-                size={22}
-                color="#6A4029"
-                style={{marginEnd: 15}}
-              />
-              <Text style={styles.logout}>Log In</Text>
-            </View>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{marginBottom: 30}}
+            // style={{marginBottom: 30}}
             onPress={() => props.navigation.navigate('signup')}>
             <View style={styles.logoutCont}>
               <Foundation
@@ -115,6 +106,19 @@ const MyDrawer = props => {
                 style={{marginEnd: 15}}
               />
               <Text style={styles.logout}>Sign Up</Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            // style={{marginBottom: 30}}
+            onPress={() => props.navigation.navigate('signin')}>
+            <View style={styles.logoutCont}>
+              <MaterialIcons
+                name="login"
+                size={22}
+                color="#6A4029"
+                style={{marginEnd: 10}}
+              />
+              <Text style={styles.logout}>Log In</Text>
             </View>
           </TouchableOpacity>
         </View>

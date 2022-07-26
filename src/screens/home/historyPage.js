@@ -19,7 +19,8 @@ import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import {HOST_API} from '@env';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
+import FoundationIcon from 'react-native-vector-icons/Foundation';
 
 const HistoryPage = ({navigation}) => {
   const [id, setId] = useState([]);
@@ -30,7 +31,7 @@ const HistoryPage = ({navigation}) => {
 
   const {history, loadingHistory, errorHistory} = GetHistory(token);
   let splitID = Array.isArray(id) && id.toString();
-  console.log(splitID, 'split');
+  // console.log(splitID, 'split');
   // console.log(id);
 
   const deleteHandler = async () => {
@@ -100,92 +101,141 @@ const HistoryPage = ({navigation}) => {
 
   return (
     <>
-      <View style={styles.container}>
-        <Header navigation={navigation} title={'Order History'} />
-        <Text
-          style={{
-            fontFamily: 'Poppins-Medium',
-            color: '#000',
-            textAlign: 'center',
-          }}>
-          <Icon name="hand-pointing-up" size={20} />
-          Select an item to delete
-        </Text>
-        <View style={styles.historyContainer}>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
-            <Text
-              style={{fontFamily: 'Poppins-Bold', color: 'red'}}
-              onPress={() => setModal(!modal)}>
-              Delete
-            </Text>
-          </View>
-          {loadingHistory ? (
-            <ActivityIndicator size={'large'} color="#6A4029" />
-          ) : (
-            <FlatList
-              indicatorStyle="black"
-              refreshing={true}
-              data={history}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              initialNumToRender={5}
-              maxToRenderPerBatch={10}
-            />
-          )}
-        </View>
-        <Modal
-          animationType="fade"
-          visible={modal}
-          onRequestClose={() => setModal(!modal)}
-          transparent={true}>
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <View>
-                <Text style={styles.warningTitle}>Warning!</Text>
-                <Text style={styles.bodyInfo}>
-                  Are you sure want to delete your history?
-                </Text>
-                <View
+      {!history ? (
+        <View style={styles.container}>
+          <Header navigation={navigation} title={'Order History'} />
+          <View style={styles.infoWrapperBottom}>
+            <View style={styles.infoWrapper3}>
+              <FoundationIcon
+                name="clipboard-notes"
+                size={100}
+                color="grey"
+                style={{marginRight: 25}}
+              />
+              <Text style={styles.infoKey2}>No history yet :(</Text>
+              <Text style={styles.infoValue3}>
+                Hit the button down below to create an order
+              </Text>
+            </View>
+            <View
+              style={{
+                // marginTop: 10,
+                paddingLeft: 10,
+                paddingRight: 10,
+                flexDirection: 'row',
+                // marginBottom: 15,
+              }}>
+              <TouchableOpacity
+                onPress={() => navigation.navigate('Home')}
+                style={{
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  backgroundColor: '#6A4029',
+                  padding: 10,
+                  borderRadius: 20,
+                  height: 70,
+                  flex: 1,
+                }}>
+                <Text
                   style={{
-                    marginTop: 40,
-                    flex: 1,
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
+                    fontFamily: 'Poppins-Bold',
+                    fontSize: 16,
+                    color: '#fff',
                   }}>
-                  <TouchableOpacity
-                    style={styles.secondaryBtn}
-                    onPress={deleteHandler}>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      {loading ? (
-                        <ActivityIndicator size={'small'} color="#6A4029" />
-                      ) : (
-                        <Text style={styles.secBtnText}>Yes</Text>
-                      )}
-                    </View>
-                  </TouchableOpacity>
-                  <TouchableOpacity
-                    style={styles.mainBtn}
-                    onPress={() => setModal(!modal)}>
-                    <View
-                      style={{
-                        flex: 1,
-                        justifyContent: 'center',
-                        alignItems: 'center',
-                      }}>
-                      <Text style={styles.mainBtnText}>No</Text>
-                    </View>
-                  </TouchableOpacity>
+                  Start Ordering Now
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      ) : (
+        <View style={styles.container}>
+          <Header navigation={navigation} title={'Order History'} />
+          <Text
+            style={{
+              fontFamily: 'Poppins-Medium',
+              color: '#000',
+              textAlign: 'center',
+            }}>
+            <Icon name="hand-pointing-up" size={20} />
+            Select an item to delete
+          </Text>
+          <View style={styles.historyContainer}>
+            <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+              <Text
+                style={{fontFamily: 'Poppins-Bold', color: 'red'}}
+                onPress={() => setModal(!modal)}>
+                Delete
+              </Text>
+            </View>
+            {loadingHistory ? (
+              <ActivityIndicator size={'large'} color="#6A4029" />
+            ) : (
+              <FlatList
+                indicatorStyle="black"
+                refreshing={true}
+                data={history}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                initialNumToRender={5}
+                maxToRenderPerBatch={10}
+              />
+            )}
+          </View>
+          <Modal
+            animationType="fade"
+            visible={modal}
+            onRequestClose={() => setModal(!modal)}
+            transparent={true}>
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <View>
+                  <Text style={styles.warningTitle}>Warning!</Text>
+                  <Text style={styles.bodyInfo}>
+                    Are you sure want to delete your history?
+                  </Text>
+                  <View
+                    style={{
+                      marginTop: 40,
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                    }}>
+                    <TouchableOpacity
+                      style={styles.secondaryBtn}
+                      onPress={deleteHandler}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        {loading ? (
+                          <ActivityIndicator size={'small'} color="#6A4029" />
+                        ) : (
+                          <Text style={styles.secBtnText}>Yes</Text>
+                        )}
+                      </View>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                      style={styles.mainBtn}
+                      onPress={() => setModal(!modal)}>
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text style={styles.mainBtnText}>No</Text>
+                      </View>
+                    </TouchableOpacity>
+                  </View>
                 </View>
               </View>
             </View>
-          </View>
-        </Modal>
-      </View>
+          </Modal>
+        </View>
+      )}
     </>
   );
 };
@@ -288,5 +338,27 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 22,
     color: 'red',
+  },
+  infoWrapperBottom: {
+    flex: 1,
+    padding: 20,
+  },
+  infoWrapper3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoKey2: {
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 25,
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
+  },
+  infoValue3: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Poppins-Medium',
+    color: 'grey',
   },
 });

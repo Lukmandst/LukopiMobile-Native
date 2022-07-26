@@ -4,6 +4,7 @@ import {
   Image,
   Modal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
@@ -22,7 +23,7 @@ import moment from 'moment';
 import axios from 'axios';
 import Toast from 'react-native-toast-message';
 import {HOST_API} from '@env';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 const EditprofilePage = ({navigation}) => {
@@ -171,7 +172,7 @@ const EditprofilePage = ({navigation}) => {
   return (
     <>
       {user && (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
           <Header navigation={navigation} title={'Edit Profile'} />
           <View style={styles.headerWrapper2}>
             <View style={{position: 'relative'}}>
@@ -218,9 +219,13 @@ const EditprofilePage = ({navigation}) => {
               />
             </View>
             <View
-              style={{flexDirection: 'row', justifyContent: 'space-evenly'}}>
+              style={{
+                flexDirection: 'row',
+                justifyContent: 'space-evenly',
+                marginTop: 15,
+              }}>
               <Pressable
-                style={{flexDirection: 'row'}}
+                style={{flexDirection: 'row', alignItems: 'center'}}
                 onPress={() =>
                   setBody({
                     ...body,
@@ -235,7 +240,7 @@ const EditprofilePage = ({navigation}) => {
                 <Text style={styles.textNormal}>Male</Text>
               </Pressable>
               <Pressable
-                style={{flexDirection: 'row'}}
+                style={{flexDirection: 'row', alignItems: 'center'}}
                 onPress={() =>
                   setBody({
                     ...body,
@@ -351,13 +356,13 @@ const EditprofilePage = ({navigation}) => {
           <View
             style={{
               flex: 0.2,
-              // marginTop: 10,
+              marginTop: 40,
               paddingHorizontal: 25,
 
               flexDirection: 'row',
               alignItems: 'center',
 
-              // marginBottom: 15,
+              marginBottom: 15,
             }}>
             <TouchableOpacity
               onPress={updateHandler}
@@ -463,7 +468,7 @@ const EditprofilePage = ({navigation}) => {
               </View>
             </View>
           </Modal>
-        </View>
+        </ScrollView>
       )}
     </>
   );
@@ -477,7 +482,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     // paddingHorizontal: 25,
     paddingVertical: 15,
-    justifyContent: 'space-around',
+    // justifyContent: 'space-around',
   },
   headerWrapper2: {
     justifyContent: 'center',
@@ -511,6 +516,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   inputWrapper: {
+    marginTop: 30,
     flex: 1,
     // backgroundColor: 'blue',W
     paddingVertical: 10,
@@ -518,13 +524,15 @@ const styles = StyleSheet.create({
     justifyContent: 'space-evenly',
   },
   inputName: {
+    marginTop: 10,
+
     fontFamily: 'Poppins-Bold',
     color: 'rgba(151, 151, 151, 1)',
   },
   textNormal: {
     fontFamily: 'Poppins-Medium',
     color: '#000',
-    fontSize: 14,
+    fontSize: 16,
   },
   centeredView: {
     flex: 1,

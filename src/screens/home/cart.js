@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {useSelector} from 'react-redux';
 import {currencyFormatter} from '../../helpers/formatter';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 
 const Cart = ({navigation}) => {
   const [quantity, setQuantity] = useState(1);

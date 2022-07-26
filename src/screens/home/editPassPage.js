@@ -9,7 +9,7 @@ import {
   View,
 } from 'react-native';
 import React, {useState} from 'react';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 import Icon from 'react-native-vector-icons/Entypo';
 import {GetUser} from '../../modules/api';
 import {useSelector} from 'react-redux';

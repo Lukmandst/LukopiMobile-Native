@@ -1,6 +1,6 @@
 import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
-import HeaderDrawer from '../../components/headerDrawer';
+import HeaderDrawer from '../../components/customHeader/headerDrawer';
 
 const SecurityPage = ({navigation}) => {
   return (

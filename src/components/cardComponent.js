@@ -1,8 +1,12 @@
 import {View, Text, Image, StyleSheet, TouchableOpacity} from 'react-native';
 import React from 'react';
 import {currencyFormatter} from '../helpers/formatter';
+import Ionicon from 'react-native-vector-icons/SimpleLineIcons';
+import {useSelector} from 'react-redux';
 
 const CardComponent = ({item, navigation}) => {
+  const {roles_id} = useSelector(state => state.auth);
+  // console.log(roles_id);
   return (
     <TouchableOpacity
       style={styles.card}
@@ -12,6 +16,13 @@ const CardComponent = ({item, navigation}) => {
         resizeMode="cover"
         source={{uri: item.image}}
       />
+      {roles_id === '2' && (
+        <TouchableOpacity
+          style={styles.editIcon}
+          onPress={() => navigation.navigate('editProduct', {id: item.id})}>
+          <Ionicon name="pencil" size={20} color="#fff" />
+        </TouchableOpacity>
+      )}
       <View style={styles.cardInfo}>
         <Text style={styles.cardName}>{item.name}</Text>
         <Text style={styles.cardPrice}>
@@ -73,5 +84,18 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontFamily: 'Poppins-Bold',
     color: '#6A4029',
+  },
+  editIcon: {
+    zIndex: 100,
+    position: 'absolute',
+    top: 110,
+    // left: 200,
+    right: 15,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    backgroundColor: '#6A4029',
   },
 });

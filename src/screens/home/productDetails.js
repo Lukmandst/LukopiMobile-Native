@@ -11,7 +11,7 @@ import {GetInfoProduct} from '../../modules/api';
 import {useDispatch} from 'react-redux';
 import {addItemToCart1} from '../../redux/actions/cartActions';
 import {currencyFormatter} from '../../helpers/formatter';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 
 const ProductDetails = ({navigation, route}) => {
   const [size, setSize] = useState('Regular');

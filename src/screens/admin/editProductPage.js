@@ -1,0 +1,762 @@
+/* eslint-disable react-native/no-inline-styles */
+import {
+  ActivityIndicator,
+  Image,
+  Modal,
+  Pressable,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {GetInfoProduct, GetUser} from '../../modules/api';
+import {useSelector} from 'react-redux';
+import Ionicon from 'react-native-vector-icons/SimpleLineIcons';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import {currencyFormatter, formatPhoneNumber} from '../../helpers/formatter';
+import DatePicker from 'react-native-date-picker';
+import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
+import moment from 'moment';
+import axios from 'axios';
+import Toast from 'react-native-toast-message';
+import {HOST_API} from '@env';
+import Header from '../../components/customHeader/header';
+import FeatherIcon from 'react-native-vector-icons/Feather';
+import MaterialIcon from 'react-native-vector-icons/MaterialCommunityIcons';
+
+const EditProductPage = ({navigation, route}) => {
+  const {id} = route.params;
+
+  const {product, loadingProduct} = GetInfoProduct(id);
+
+  const [loading, setLoading] = useState(false);
+  const [body, setBody] = useState({
+    name: '',
+    price: '',
+    details: '',
+    categories_id: '',
+  });
+  const [category, setCategory] = useState('');
+  const [picture, setPicture] = useState(false);
+  const [openDel, setOpenDel] = useState(false);
+  const [modal, setModal] = useState(false);
+
+  // console.log(product);
+  const openCamera = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+      maxWidth: 1280,
+      maxHeight: 1280,
+    };
+    launchCamera(options, res => {
+      if (res.didCancel) {
+        Toast.show({
+          type: 'error',
+          text1: 'Oopss 😓',
+          text2: 'You have not set any picture yet!',
+        });
+      } else if (res.errorCode) {
+        Toast.show({
+          type: 'error',
+          text1: 'Oopss 😓',
+          text2: `${res.errorMessage}`,
+        });
+        console.log(res.errorMessage);
+      } else {
+        const data = res.assets[0];
+        // console.log(data);
+        setPicture({
+          uri: data.uri,
+          type: data.type,
+          name: data.fileName,
+        });
+        Toast.show({
+          type: 'success',
+          text1: 'Set Photo Success! 🙌',
+        });
+      }
+    });
+  };
+  const openGallery = () => {
+    const options = {
+      mediaType: 'photo',
+      quality: 1,
+      maxWidth: 1280,
+      maxHeight: 1280,
+    };
+    launchImageLibrary(options, res => {
+      if (res.didCancel) {
+        Toast.show({
+          type: 'error',
+          text1: 'Oopss 😓',
+          text2: 'You have not set any picture yet!',
+        });
+      } else if (res.errorCode) {
+        Toast.show({
+          type: 'error',
+          text1: 'Oopss 😓',
+          text2: `${res.errorMessage}`,
+        });
+        console.log(res.errorMessage);
+      } else {
+        const data = res.assets[0];
+        setPicture({
+          uri: data.uri,
+          type: data.type,
+          name: data.fileName,
+        });
+        Toast.show({
+          type: 'success',
+          text1: 'Set Photo Success! 🙌',
+        });
+      }
+    });
+  };
+
+  const updateHandler = async () => {
+    try {
+      setLoading(true);
+      const form = new FormData();
+      form.append('name', body.name);
+      form.append('price', body.price);
+      form.append('details', body.details);
+      form.append('category', body.categories_id);
+      form.append('photo', picture);
+
+      const result = await axios({
+        method: 'PATCH',
+        url: `${HOST_API}/product/${id}`,
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        data: form,
+      });
+      setLoading(false);
+      setPicture(false);
+      Toast.show({
+        type: 'success',
+        text1: 'Request Success! 🙌',
+        text2: `${result.data.msg} 👋`,
+      });
+      setTimeout(() => {
+        navigation.replace('details', {id: id});
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Oopss 😓',
+        text2: `${error.response.data?.err.msg}`,
+      });
+    }
+  };
+  const resetHandler = () => {
+    setBody({name: '', price: '', details: '', categories_id: ''});
+    setPicture(false);
+  };
+  const deleteHandler = async () => {
+    try {
+      setLoading(true);
+      const result = await axios({
+        method: 'DELETE',
+        url: `${HOST_API}/product/${id}`,
+      });
+      setLoading(false);
+      Toast.show({
+        type: 'success',
+        text1: 'The product has been deleted! 🙌',
+      });
+      setTimeout(() => {
+        navigation.replace('HomeScreen');
+      }, 2000);
+    } catch (error) {
+      setLoading(false);
+      console.error(error);
+      Toast.show({
+        type: 'error',
+        text1: 'Oopss 😓',
+        text2: `${error.response.data?.err.msg}`,
+      });
+    }
+  };
+  useEffect(() => {
+    if (product) {
+      setBody({
+        ...body,
+        name: product[0].name,
+        price: product[0].price,
+        details: product[0].details,
+        categories_id: product[0].categories_id,
+      });
+    }
+    if (
+      product &&
+      product[0].categories_id === '07e88ba9-1a54-46ab-bf2c-3dc8831090a4'
+    ) {
+      setCategory('Coffee');
+    } else if (
+      product &&
+      product[0].categories_id === '30b95dde-a820-41dd-b474-902026e3e755'
+    ) {
+      setCategory('NonCoffee');
+    } else if (
+      product &&
+      product[0].categories_id === 'ea71bfcd-f1f1-4976-ae1e-9ff0f2c70d0e'
+    ) {
+      setCategory('Foods');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [product]);
+  return (
+    <>
+      <ScrollView style={styles.container}>
+        <Header
+          navigation={navigation}
+          title={`Edit ${product && product[0].name}`}
+        />
+        {loadingProduct ? (
+          <ActivityIndicator size={'large'} color="#fff" />
+        ) : (
+          <>
+            <View style={styles.headerWrapper2}>
+              <View style={{position: 'relative'}}>
+                <TouchableOpacity
+                  style={styles.editIcon}
+                  onPress={() => setModal(!modal)}>
+                  <MaterialIcon name="plus-thick" size={20} color="#fff" />
+                </TouchableOpacity>
+                <Image
+                  resizeMode="cover"
+                  style={styles.profileImg}
+                  source={
+                    picture ? {uri: picture.uri} : {uri: product[0].image}
+                  }
+                />
+              </View>
+            </View>
+            <View style={styles.inputWrapper}>
+              <View style={{paddingLeft: 20, paddingRight: 20}}>
+                <Text style={styles.inputName}>Name:</Text>
+                <TextInput
+                  defaultValue={product[0].name}
+                  onChangeText={value =>
+                    setBody({
+                      ...body,
+                      name: value,
+                    })
+                  }
+                  placeholder="Enter product name"
+                  placeholderTextColor={'rgba(151, 151, 151, 1)'}
+                  style={{
+                    fontFamily: 'Poppins-Regular',
+                    color: '#000',
+                    borderBottomWidth: 2,
+                    borderBottomColor: 'rgba(151, 151, 151, 1)',
+                  }}
+                />
+              </View>
+              <View style={{paddingLeft: 20, paddingRight: 20}}>
+                <Text style={styles.inputName}>Category:</Text>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-evenly',
+                  }}>
+                  <TouchableOpacity
+                    style={
+                      category === 'Coffee'
+                        ? styles.CategoryBtnActive
+                        : styles.CategoryBtn
+                    }
+                    onPress={() => {
+                      setCategory('Coffee');
+                      setBody({
+                        ...body,
+                        categories_id: '07e88ba9-1a54-46ab-bf2c-3dc8831090a4',
+                      });
+                    }}>
+                    <MaterialIcon
+                      name="coffee-outline"
+                      size={20}
+                      color="#000"
+                    />
+                    <Text style={styles.CategoryText}>Coffee</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={
+                      category === 'NonCoffee'
+                        ? styles.CategoryBtnActive
+                        : styles.CategoryBtn
+                    }
+                    onPress={() => {
+                      setCategory('NonCoffee');
+                      setBody({
+                        ...body,
+                        categories_id: '30b95dde-a820-41dd-b474-902026e3e755',
+                      });
+                    }}>
+                    <MaterialIcon
+                      name="coffee-off-outline"
+                      size={20}
+                      color="#000"
+                    />
+                    <Text style={styles.CategoryText}>Non Coffee</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    style={
+                      category === 'Foods'
+                        ? styles.CategoryBtnActive
+                        : styles.CategoryBtn
+                    }
+                    onPress={() => {
+                      setCategory('Foods');
+                      setBody({
+                        ...body,
+                        categories_id: 'ea71bfcd-f1f1-4976-ae1e-9ff0f2c70d0e',
+                      });
+                    }}>
+                    <MaterialIcon name="food" size={20} color="#000" />
+                    <Text style={styles.CategoryText}>Foods</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+              <View style={{paddingLeft: 20, paddingRight: 20}}>
+                <Text style={styles.inputName}>Price:</Text>
+                <TextInput
+                  defaultValue={currencyFormatter.format(product[0].price)}
+                  onChangeText={value =>
+                    setBody({
+                      ...body,
+                      price: value,
+                    })
+                  }
+                  keyboardType="number-pad"
+                  placeholder="Enter product price"
+                  placeholderTextColor={'rgba(151, 151, 151, 1)'}
+                  style={{
+                    fontFamily: 'Poppins-Regular',
+                    color: '#000',
+                    borderBottomWidth: 2,
+                    borderBottomColor: 'rgba(151, 151, 151, 1)',
+                  }}
+                />
+              </View>
+
+              <View style={{paddingLeft: 20, paddingRight: 20}}>
+                <Text style={styles.inputName}>Description:</Text>
+                <TextInput
+                  defaultValue={product[0].details}
+                  multiline={true}
+                  numberOfLines={2}
+                  value={body.delivery_address}
+                  onChangeText={value =>
+                    setBody({
+                      ...body,
+                      details: value,
+                    })
+                  }
+                  placeholder="Enter product descriptions"
+                  placeholderTextColor={'rgba(151, 151, 151, 1)'}
+                  style={{
+                    fontFamily: 'Poppins-Regular',
+                    color: '#000',
+                    borderBottomWidth: 2,
+                    borderBottomColor: 'rgba(151, 151, 151, 1)',
+                  }}
+                />
+              </View>
+            </View>
+            <View style={{flex: 0.3, backgroundColor: '#fff', marginTop: 60}}>
+              <View
+                style={{
+                  //   flex: 0.2,
+                  // marginTop: 10,
+                  paddingHorizontal: 25,
+
+                  flexDirection: 'row',
+                  alignItems: 'center',
+
+                  // marginBottom: 15,
+                }}>
+                <TouchableOpacity
+                  onPress={() => setOpenDel(!openDel)}
+                  style={{
+                    elevation: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: 'red',
+                    padding: 10,
+                    borderRadius: 10,
+                    height: 40,
+                    flex: 1,
+                    flexDirection: 'row',
+                  }}>
+                  <MaterialIcon
+                    name="trash-can-outline"
+                    size={20}
+                    color="#fff"
+                  />
+                  <Text
+                    style={{
+                      fontFamily: 'Poppins-Bold',
+                      fontSize: 16,
+                      color: '#fff',
+                    }}>
+                    Delete Product
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              <View
+                style={{
+                  //   flex: 0.2,
+                  marginTop: 10,
+                  paddingHorizontal: 25,
+
+                  flexDirection: 'row',
+                  alignItems: 'center',
+
+                  marginBottom: 15,
+                }}>
+                <TouchableOpacity
+                  onPress={updateHandler}
+                  style={{
+                    elevation: 2,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: '#6A4029',
+                    padding: 10,
+                    borderRadius: 10,
+                    height: 40,
+                    flex: 1,
+                  }}>
+                  {loading ? (
+                    <ActivityIndicator size={'large'} color="#fff" />
+                  ) : (
+                    <Text
+                      style={{
+                        fontFamily: 'Poppins-Bold',
+                        fontSize: 16,
+                        color: '#fff',
+                      }}>
+                      Save Product
+                    </Text>
+                  )}
+                </TouchableOpacity>
+              </View>
+            </View>
+          </>
+        )}
+      </ScrollView>
+      <Modal
+        animationType="slide"
+        visible={modal}
+        onRequestClose={() => setModal(!modal)}
+        transparent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.warningTitle}>Add Product Picture</Text>
+            <View style={styles.bodyInfo}>
+              <TouchableOpacity style={styles.mainBtn2} onPress={openCamera}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <FeatherIcon name="camera" size={18} color="#fff" />
+                  <Text style={styles.mainBtnText2}>Camera</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity style={styles.mainBtn2} onPress={openGallery}>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: 'row',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <FeatherIcon name="image" size={18} color="#fff" />
+
+                  <Text style={styles.mainBtnText2}>Gallery</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View
+              style={{
+                marginTop: 40,
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                // backgroundColor: 'red',
+              }}>
+              <TouchableOpacity
+                style={styles.secondaryBtn}
+                onPress={() => {
+                  setPicture(false);
+                  setModal(!modal);
+                }}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={styles.secBtnText}>Cancel</Text>
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.mainBtn}
+                onPress={() => setModal(!modal)}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={styles.mainBtnText}>Confirm</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+      <Modal
+        animationType="fade"
+        visible={openDel}
+        onRequestClose={() => setOpenDel(!openDel)}
+        transparent={true}>
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.warningTitle2}>Warning!</Text>
+            <Text style={styles.bodyInfo}>
+              Are you sure want to delete the product ?
+            </Text>
+            <View
+              style={{
+                marginTop: 40,
+                flex: 1,
+                flexDirection: 'row',
+                justifyContent: 'space-around',
+                // backgroundColor: 'red',
+              }}>
+              <TouchableOpacity
+                style={styles.secondaryBtn}
+                onPress={deleteHandler}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  {loading ? (
+                    <ActivityIndicator size={'small'} color="#6A4029" />
+                  ) : (
+                    <Text style={styles.secBtnText}>Yes</Text>
+                  )}
+                </View>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.mainBtn}
+                onPress={() => setOpenDel(!openDel)}>
+                <View
+                  style={{
+                    flex: 1,
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                  }}>
+                  <Text style={styles.mainBtnText}>No</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </View>
+      </Modal>
+    </>
+  );
+};
+
+export default EditProductPage;
+
+const styles = StyleSheet.create({
+  container: {
+    // flex: 1,
+    backgroundColor: '#fff',
+    // paddingHorizontal: 25,
+    // paddingVertical: 15,
+    // justifyContent: 'space-around',
+  },
+  container2: {
+    height: '100%',
+    backgroundColor: '#fff',
+    flex: 1,
+    justifyContent: 'space-around',
+  },
+  headerWrapper2: {
+    justifyContent: 'center',
+    position: 'relative',
+    flex: 0.5,
+    // backgroundColor: 'red',
+    alignItems: 'center',
+    paddingHorizontal: 15,
+    // paddingBottom: 10,
+  },
+  editIcon: {
+    zIndex: 100,
+    position: 'absolute',
+    top: 90,
+    // left: 200,
+    right: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 40,
+    height: 40,
+    borderRadius: 40,
+    backgroundColor: '#6A4029',
+  },
+  profileImg: {
+    width: 140,
+    height: 140,
+    borderRadius: 140,
+    marginBottom: 10,
+    borderColor: 'rgba(175, 172, 174, 0.25)',
+    borderStyle: 'solid',
+    borderWidth: 2,
+  },
+  inputWrapper: {
+    marginTop: 30,
+    flex: 1,
+    // backgroundColor: 'blue',
+    paddingVertical: 10,
+    paddingHorizontal: 25,
+    justifyContent: 'space-around',
+  },
+  inputName: {
+    marginTop: 15,
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
+  },
+  textNormal: {
+    fontFamily: 'Poppins-Medium',
+    color: '#000',
+    fontSize: 14,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    // marginTop: 22,
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  modalView: {
+    width: 344,
+    height: 192,
+    margin: 20,
+    backgroundColor: '#F5F5F8',
+    borderRadius: 20,
+    padding: 25,
+    // alignItems: 'center',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  bodyInfo: {
+    flex: 1,
+    // textAlign: 'center',
+    flexDirection: 'row',
+    fontFamily: 'Poppins-Medium',
+    fontSize: 18,
+    color: '#000',
+    justifyContent: 'space-around',
+    // backgroundColor: 'blue',
+    marginTop: 10,
+  },
+  mainBtn: {
+    width: 105,
+    height: 40,
+    backgroundColor: '#6A4029',
+    borderRadius: 20,
+  },
+  mainBtn2: {
+    width: 105,
+    height: 40,
+    backgroundColor: '#FFBA33',
+    borderRadius: 20,
+  },
+  secondaryBtn: {
+    width: 105,
+    height: 40,
+    backgroundColor: '#fff',
+    borderStyle: 'solid',
+    borderWidth: 1,
+    borderColor: '#9F9F9F',
+    borderRadius: 20,
+  },
+  mainBtnText: {
+    fontFamily: 'Poppins-SemiBold',
+    color: '#fff',
+  },
+  mainBtnText2: {
+    fontFamily: 'Poppins-SemiBold',
+    marginLeft: 10,
+    color: '#fff',
+  },
+  secBtnText: {
+    fontFamily: 'Poppins-SemiBold',
+    color: '#9F9F9F',
+  },
+  warningTitle: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 22,
+    color: '#6A4029',
+  },
+  warningTitle2: {
+    textAlign: 'center',
+    fontFamily: 'Poppins-SemiBold',
+    fontSize: 22,
+    color: '#6A4029',
+  },
+  CategoryBtn: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 105,
+    height: 40,
+    backgroundColor: '#fff',
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: '#9F9F9F',
+    borderRadius: 20,
+    elevation: 5,
+  },
+  CategoryBtnActive: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 105,
+    height: 40,
+    backgroundColor: '#FFBA33',
+    // borderStyle: 'solid',
+    // borderWidth: 1,
+    // borderColor: '#9F9F9F',
+    borderRadius: 20,
+    elevation: 5,
+  },
+  CategoryText: {
+    marginLeft: 5,
+    fontFamily: 'Poppins-SemiBold',
+    color: '#000',
+  },
+});

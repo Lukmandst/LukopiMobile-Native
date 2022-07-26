@@ -17,10 +17,10 @@ const Forgot = ({navigation}) => {
   const [email, setEmail] = useState('');
   const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
-  console.log(email);
+  // console.log(email);
   const forgotHandler = async () => {
     const body = {email: email};
-    console.log(body);
+    // console.log(body);
     try {
       setLoading(true);
       const result = await axios({
@@ -37,7 +37,7 @@ const Forgot = ({navigation}) => {
       setTimeout(() => {
         setSuccess(true);
       }, 2000);
-      console.log(result.data);
+      // console.log(result.data);
     } catch (error) {
       setLoading(false);
       console.log(error);

@@ -1,5 +1,5 @@
 import 'react-native-gesture-handler';
-import React from 'react';
+import React, {useEffect} from 'react';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createDrawerNavigator} from '@react-navigation/drawer';
 import Home from './screens/home';
@@ -24,9 +24,17 @@ import HistoryPage from './screens/home/historyPage';
 import PrivacyPage from './screens/home/privacyPage';
 import SecurityPage from './screens/home/securityPage';
 import EditPassPage from './screens/home/editPassPage';
-
+import SplashScreen from 'react-native-splash-screen';
+import DashboardPage from './screens/admin/dashboardPage';
+import AddProductPage from './screens/admin/addProductPage';
+import EditProductPage from './screens/admin/editProductPage';
+import AddPromoPage from './screens/admin/addPromo';
 const DrawerRouter = () => {
+  const {roles_id} = useSelector(state => state.auth);
   const Drawer = createDrawerNavigator();
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <Drawer.Navigator
       screenOptions={{
@@ -69,19 +77,35 @@ const DrawerRouter = () => {
           ),
         }}
       />
-      <Drawer.Screen
-        name="Privacy Policy"
-        component={PrivacyPage}
-        options={{
-          drawerIcon: ({color}) => (
-            <MaterialComIcons
-              name="sticker-text-outline"
-              size={22}
-              color={color}
-            />
-          ),
-        }}
-      />
+      {roles_id === '2' ? (
+        <Drawer.Screen
+          name="Sales Report"
+          component={DashboardPage}
+          options={{
+            drawerIcon: ({color}) => (
+              <MaterialComIcons
+                name="sticker-text-outline"
+                size={22}
+                color={color}
+              />
+            ),
+          }}
+        />
+      ) : (
+        <Drawer.Screen
+          name="Privacy Policy"
+          component={PrivacyPage}
+          options={{
+            drawerIcon: ({color}) => (
+              <MaterialComIcons
+                name="sticker-text-outline"
+                size={22}
+                color={color}
+              />
+            ),
+          }}
+        />
+      )}
       <Drawer.Screen
         name="Security"
         component={SecurityPage}
@@ -98,6 +122,9 @@ const DrawerRouter = () => {
 const Router = () => {
   const {Navigator, Screen} = createNativeStackNavigator();
   const {token} = useSelector(state => state.auth);
+  useEffect(() => {
+    SplashScreen.hide();
+  }, []);
   return (
     <Navigator
       initialRouteName={!token ? 'welcome' : 'HomeScreen'}
@@ -144,6 +171,9 @@ const Router = () => {
       <Screen name="editProfile" component={EditprofilePage} />
       <Screen name="editPass" component={EditPassPage} />
       <Screen name="history" component={HistoryPage} />
+      <Screen name="newProduct" component={AddProductPage} />
+      <Screen name="newPromo" component={AddPromoPage} />
+      <Screen name="editProduct" component={EditProductPage} />
     </Navigator>
   );
 };

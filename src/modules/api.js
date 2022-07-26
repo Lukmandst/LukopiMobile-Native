@@ -5,7 +5,7 @@ const fetcher = (url, token) =>
   axios
     .get(url, {headers: {Authorization: `Bearer ${token}`}})
     .then(res => res.data.data);
-const fetcher2 = url => axios.get(url).then(res => res.data.data);
+const fetcher2 = url => axios.get(url).then(res => res.data);
 export function GetUser(token) {
   const {data, error} = useSWR([`${HOST_API}/user/info`, token], fetcher, {
     refreshInterval: 1000,
@@ -30,60 +30,69 @@ export function GetHistory(token) {
     errorHistory: error,
   };
 }
-export function GetFavProduct() {
-  const {data, error} = useSWR([`${HOST_API}/transaction/favorite`], fetcher2);
+export function GetFavProduct(name) {
+  const {data, error} = useSWR(
+    [`${HOST_API}/transaction/favorite?name=${name}`],
+    fetcher2,
+  );
   return {
-    Fav: data,
+    Fav: data?.data,
     loadingFav: !error && !data,
     isError: error,
   };
 }
-export function GetAllProduct(sort, filter) {
+export function GetAllProduct(name, sort, filter, limit = 5) {
   const {data, error} = useSWR(
-    [`${HOST_API}/product/all?order=ASC&sort=name`],
+    [
+      `${HOST_API}/product?name=${name}&order=${sort}&sort=${filter}&limit=${limit}`,
+    ],
     fetcher2,
   );
   return {
-    All: data,
+    All: data?.data,
+    AllMeta: data?.meta,
     loadingAll: !error && !data,
     isError: error,
   };
 }
-export function GetCoffeeProduct(sort, filter) {
+export function GetCoffeeProduct(name, sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=07e88ba9-1a54-46ab-bf2c-3dc8831090a4&order=${sort}&sort=${filter}`,
+      `${HOST_API}/product?name=${name}&category=coffee&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
   return {
-    Coffee: data,
+    Coffee: data?.data,
+    CoffeeMeta: data?.meta,
     loadingCoffee: !error && !data,
     isError: error,
   };
 }
-export function GetNonCoffeeProduct(sort, filter) {
+export function GetNonCoffeeProduct(name, sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=30b95dde-a820-41dd-b474-902026e3e755&order=${sort}&sort=${filter}`,
+      `${HOST_API}/product?name=${name}&category=non%20coffee&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
   return {
-    NonCoffee: data,
+    NonCoffee: data?.data,
+    NonMeta: data?.meta,
     loadingNonCoffee: !error && !data,
     isError: error,
   };
 }
-export function GetFoodsProduct(sort, filter) {
+export function GetFoodsProduct(name, sort, filter) {
   const {data, error} = useSWR(
     [
-      `${HOST_API}/product?category=ea71bfcd-f1f1-4976-ae1e-9ff0f2c70d0e&order=${sort}&sort=${filter}`,
+      `${HOST_API}/product?name=${name}&category=foods&order=${sort}&sort=${filter}`,
     ],
     fetcher2,
   );
   return {
-    Foods: data,
+    Foods: data?.data,
+    FoodsMeta: data?.meta,
     loadingFoods: !error && !data,
     isError: error,
   };
@@ -91,8 +100,16 @@ export function GetFoodsProduct(sort, filter) {
 export function GetInfoProduct(id) {
   const {data, error} = useSWR([`${HOST_API}/product/${id}`], fetcher2);
   return {
-    product: data,
+    product: data?.data,
     loadingProduct: !error && !data,
+    isError: error,
+  };
+}
+export function GetSales() {
+  const {data, error} = useSWR([`${HOST_API}/transaction/all`], fetcher2);
+  return {
+    sales: data?.data,
+    loadingsales: !error && !data,
     isError: error,
   };
 }

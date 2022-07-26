@@ -15,12 +15,13 @@ import {GetHistory, GetUser} from '../../modules/api';
 import {useSelector} from 'react-redux';
 import Ionicon from 'react-native-vector-icons/SimpleLineIcons';
 import {formatPhoneNumber} from '../../helpers/formatter';
-import HeaderDrawer from '../../components/headerDrawer';
+import HeaderDrawer from '../../components/customHeader/headerDrawer';
 import {launchCamera, launchImageLibrary} from 'react-native-image-picker';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import Toast from 'react-native-toast-message';
 import axios from 'axios';
 import {HOST_API} from '@env';
+import FoundationIcon from 'react-native-vector-icons/Foundation';
 
 const ProfilePage = ({navigation}) => {
   const [modal, setModal] = useState(false);
@@ -108,7 +109,7 @@ const ProfilePage = ({navigation}) => {
       const body = new FormData();
       body.append('photo', picture);
       setLoading(true);
-      console.log(body);
+      // console.log(body);
       const result = await axios({
         method: 'PATCH',
         url: `${HOST_API}/user/edit`,
@@ -120,7 +121,7 @@ const ProfilePage = ({navigation}) => {
       });
       setLoading(false);
       setPicture(false);
-      console.log(result.data);
+      // console.log(result.data);
       Toast.show({
         type: 'success',
         text1: 'Request Success! 🙌',
@@ -227,7 +228,17 @@ const ProfilePage = ({navigation}) => {
                 See More{' '}
               </Text>
             </View>
-            {loadingHistory ? (
+            {!history ? (
+              <View style={styles.infoWrapper3}>
+                <FoundationIcon
+                  name="clipboard-notes"
+                  size={60}
+                  color="grey"
+                  style={{marginRight: 25}}
+                />
+                <Text style={styles.infoKey2}>No history yet :(</Text>
+              </View>
+            ) : loadingHistory ? (
               <ActivityIndicator size={'large'} color="#6A4029" />
             ) : (
               <FlatList
@@ -649,5 +660,23 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 22,
     color: '#6A4029',
+  },
+  infoWrapper3: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  infoKey2: {
+    alignItems: 'center',
+    textAlign: 'center',
+    fontSize: 20,
+    fontFamily: 'Poppins-Bold',
+    color: '#000',
+  },
+  infoValue3: {
+    textAlign: 'center',
+    fontSize: 18,
+    fontFamily: 'Poppins-Medium',
+    color: 'grey',
   },
 });

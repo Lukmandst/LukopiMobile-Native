@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import {currencyFormatter, formatPhoneNumber} from '../../helpers/formatter';
 import {useSelector} from 'react-redux';
 import {GetUser} from '../../modules/api';
-import Header from '../../components/header';
+import Header from '../../components/customHeader/header';
 
 const DeliveryPage = ({navigation, route}) => {
   const [delivery, setDelivery] = useState(false);
