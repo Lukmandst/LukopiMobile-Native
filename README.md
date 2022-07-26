@@ -1,11 +1,10 @@
 <p align="center">
 
   <h1 align="center">Lukopi Mobile</h1>
-  <h3 align="center">by Lucky Movie</h3>
+  <h3 align="center">Android Version</h3>
 
   <p align="center">
-    <br />
-    <a href="#">View Live Application</a>
+    <a href="https://drive.google.com/drive/folders/1_J15ydFp7Qxj1uFjFszSATK8b4FXX04Z?usp=sharing">View Generated Application(APK)</a>
     ·
     <a href="https://github.com//Lukmandst/LukopiMobile-Native/issues">Report Bug</a>
     ·
@@ -23,29 +22,23 @@
 
 ## About The Project
 
-Tickitz is a website that provides a service for booking tickets movies at your favorite cinema
+Lukopi mobile is a mobile application that provides a transactions service for coffeeshop. This application can be used both customer and owner.
 ### Built With
 
 
-![HTML5](https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white)
-![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
-![Javascript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
-<br>
 
-[![Bootstrap](https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white)](https://getbootstrap.com/)
-[![ReactJS](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
-[![NextJS](https://img.shields.io/badge/NextJS-000000?style=for-the-badge)](https://nextjs.org/)
+![Javascript](https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E)
+[![React Native](https://img.shields.io/badge/ReactNative-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Redux](https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white)](https://redux.js.org/)
-[![Vercel](https://img.shields.io/badge/Vercel-000000?style=for-the-badge&logo=vercel&logoColor=white)](https://vercel.com/)
+
 <br>
 
 ## Getting Started
 
 ### Prerequisites
 
-- [NodeJs](https://nodejs.org/)
-- [PostgreSql](https://www.postgresql.org/)
-- [Postman](https://www.postman.com/)
+- [![Java](https://img.shields.io/badge/OpenJDK-ED8B00?style=for-the-badge&logo=java&logoColor=white)](https://openjdk.org/)
+- [![Android Studio](https://img.shields.io/badge/Android_Studio-3DDC84?style=for-the-badge&logo=android-studio&logoColor=white)](https://developer.android.com/studio)
 
 ### Installation
 
@@ -64,7 +57,7 @@ $ npm install
 3. Add .env file at root folder project, and add following
 
 ```sh
-API_HOST=https://lucky-movie-api.herokuapp.com
+HOST_API=https://lukopi-coffeeshop.herokuapp.com
 ```
 
 
@@ -91,5 +84,7 @@ $ npm start
 
 ### Related Project
 
-- [`Frontend-Tickitz`](https://github.com/luckymovie/luckymovie-client)
-- [`Backend-luckymovie`](https://github.com/luckymovie/luckymovie-server)
+[Lukopi API](https://lukopi-coffeeshop.herokuapp.com/)
+<a href="https://lukopi-coffeeshop.herokuapp.com/">
+  <img  align="right"  src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+</a>
