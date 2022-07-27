@@ -39,8 +39,7 @@ const MyDrawer = props => {
       setLoading(false);
       Toast.show({
         type: 'success',
-        text1: 'Request Success! 🙌',
-        text2: `${result.data.msg} 👋`,
+        text1: `${result.data.msg} 🙌`,
       });
       setTimeout(() => {
         setModal(!modal);
@@ -50,8 +49,7 @@ const MyDrawer = props => {
       setLoading(false);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `${error.response.data?.err.msg} 😓`,
       });
     }
   };

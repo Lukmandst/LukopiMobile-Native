@@ -340,6 +340,111 @@ const SeeMorePage = ({navigation, route}) => {
                 </TouchableOpacity>
               </View>
             </View>
+            <Text style={styles.warningTitle}>Categories</Text>
+            <View style={styles.bodyInfo}>
+              <View style={styles.filterMenu}>
+                <TouchableOpacity
+                  style={
+                    title === 'Favourite'
+                      ? styles.mainBtn2Active
+                      : styles.mainBtn2
+                  }
+                  onPress={() => {
+                    navigation.setParams({title: 'Favourite'});
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {/* <FeatherIcon name="camera" size={18} color="#fff" /> */}
+                    <Text style={styles.mainBtnText2}>Favourite</Text>
+                  </View>
+                </TouchableOpacity>
+
+                <TouchableOpacity
+                  style={
+                    title === 'Coffee' ? styles.mainBtn2Active : styles.mainBtn2
+                  }
+                  onPress={() => {
+                    navigation.setParams({title: 'Coffee'});
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {/* <FeatherIcon name="image" size={18} color="#fff" /> */}
+
+                    <Text style={styles.mainBtnText2}>Coffee</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={
+                    title === 'Non Coffee'
+                      ? styles.mainBtn2Active
+                      : styles.mainBtn2
+                  }
+                  onPress={() => {
+                    navigation.setParams({title: 'Non Coffee'});
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {/* <FeatherIcon name="camera" size={18} color="#fff" /> */}
+                    <Text style={styles.mainBtnText2}>Non Coffee</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={
+                    title === 'Foods' ? styles.mainBtn2Active : styles.mainBtn2
+                  }
+                  onPress={() => {
+                    navigation.setParams({title: 'Foods'});
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {/* <FeatherIcon name="image" size={18} color="#fff" /> */}
+
+                    <Text style={styles.mainBtnText2}>Foods</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={
+                    title === 'All Menu'
+                      ? styles.mainBtn2Active
+                      : styles.mainBtn2
+                  }
+                  onPress={() => {
+                    navigation.setParams({title: 'All Menu'});
+                  }}>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: 'row',
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                    }}>
+                    {/* <FeatherIcon name="image" size={18} color="#fff" /> */}
+
+                    <Text style={styles.mainBtnText2}>All Menu</Text>
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
             <View
               style={{
                 marginTop: 20,
@@ -475,9 +580,9 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: '90%',
-    height: '30%',
+    height: '40%',
     margin: 20,
-    justifyContent: 'space-between',
+    // justifyContent: 'space-between',
     backgroundColor: '#F5F5F8',
     borderRadius: 20,
     padding: 25,
@@ -495,7 +600,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-around',
     alignItems: 'center',
     // backgroundColor: 'blue',
-    marginTop: 5,
+    // marginTop: 5,
   },
   mainBtn: {
     width: 105,
@@ -550,6 +655,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Poppins-SemiBold',
     fontSize: 22,
     color: '#6A4029',
+    marginBottom: 15,
   },
   infoWrapperBottom: {
     flex: 1,

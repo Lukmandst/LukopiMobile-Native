@@ -32,22 +32,18 @@ const Signup = ({navigation}) => {
       if (!body.email.match(emailFormat)) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'Email format should be mail@mail.com !',
+          text1: 'Oopss 😓 Email format should be mail@mail.com !',
         });
       } else if (body.pass.length < 3) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'Password should be at least 3 characters',
-          text2NumberOfLines: 1,
+          text1: 'Oopss 😓 Password should be at least 3 characters',
         });
       } else if (!body.pass.match(passFormat)) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'Password should includes at least 1 numeric character !',
-          text2NumberOfLines: 1,
+          text1:
+            'Oopss 😓 Password should includes at least 1 numeric character !',
         });
       } else {
         setLoading(true);
@@ -59,8 +55,7 @@ const Signup = ({navigation}) => {
         setLoading(false);
         Toast.show({
           type: 'success',
-          text1: 'Request Success! 🙌',
-          text2: `${result.data.msg} 👋`,
+          text1: `${result.data.msg} 👋`,
         });
         setTimeout(() => {
           navigation.navigate('signin');
@@ -72,8 +67,7 @@ const Signup = ({navigation}) => {
       console.log(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `${error.response.data?.err.msg}`,
       });
       // console.error(error.response.data);
     }

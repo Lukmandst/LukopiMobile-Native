@@ -56,14 +56,12 @@ const EditProductPage = ({navigation, route}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'You have not set any picture yet!',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+          text1: `${res.errorMessage}`,
         });
         console.log(res.errorMessage);
       } else {
@@ -92,14 +90,13 @@ const EditProductPage = ({navigation, route}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'OopssYou have not set any picture yet!😓',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+
+          text1: `${res.errorMessage}`,
         });
         console.log(res.errorMessage);
       } else {
@@ -139,8 +136,8 @@ const EditProductPage = ({navigation, route}) => {
       setPicture(false);
       Toast.show({
         type: 'success',
-        text1: 'Request Success! 🙌',
-        text2: `${result.data.msg} 👋`,
+
+        text1: `${result.data.msg} 👋`,
       });
       setTimeout(() => {
         navigation.replace('details', {id: id});
@@ -150,8 +147,7 @@ const EditProductPage = ({navigation, route}) => {
       console.error(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `Oopss 😓${error.response.data?.err.msg}`,
       });
     }
   };
@@ -179,8 +175,7 @@ const EditProductPage = ({navigation, route}) => {
       console.error(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `${error.response.data?.err.msg}`,
       });
     }
   };
@@ -673,7 +668,7 @@ const styles = StyleSheet.create({
   },
   bodyInfo: {
     flex: 1,
-    // textAlign: 'center',
+    textAlign: 'center',
     flexDirection: 'row',
     fontFamily: 'Poppins-Medium',
     fontSize: 18,
@@ -726,7 +721,7 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Poppins-SemiBold',
     fontSize: 22,
-    color: '#6A4029',
+    color: 'red',
   },
   CategoryBtn: {
     flexDirection: 'row',

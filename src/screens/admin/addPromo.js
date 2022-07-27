@@ -31,9 +31,10 @@ const AddPromoPage = ({navigation}) => {
   const [loading, setLoading] = useState(false);
   const [body, setBody] = useState({
     name: '',
-    price: '',
-    details: '',
-    categories_id: '',
+    code: '',
+    discount: '',
+    description: '',
+    date_end: '',
   });
   const [category, setCategory] = useState('');
   const [picture, setPicture] = useState(false);
@@ -51,14 +52,12 @@ const AddPromoPage = ({navigation}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'Oopss You have not set any picture yet!😓',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+          text1: `Oopss ${res.errorMessage}😓`,
         });
         console.log(res.errorMessage);
       } else {
@@ -87,14 +86,12 @@ const AddPromoPage = ({navigation}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'Oopss You have not set any picture yet!😓',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+          text1: `Oopss ${res.errorMessage} 😓`,
         });
         console.log(res.errorMessage);
       } else {
@@ -115,49 +112,40 @@ const AddPromoPage = ({navigation}) => {
   const createHandler = async () => {
     try {
       setLoading(true);
-      const form = new FormData();
-      form.append('name', body.name);
-      form.append('price', body.price);
-      form.append('details', body.details);
-      form.append('category', body.categories_id);
-      form.append('photo', picture);
-      if (!picture) {
-        setLoading(false);
-        Toast.show({
-          type: 'error',
-          text1: 'Oopss, picture cannot be empty! 😓',
-        });
-      } else {
-        const result = await axios({
-          method: 'POST',
-          url: `${HOST_API}/product`,
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-          data: form,
-        });
-        setLoading(false);
-        setPicture(false);
-        Toast.show({
-          type: 'success',
-          text1: 'New product has been added! 🙌',
-        });
-        // setTimeout(() => {
-        //   navigation.navigate('Profile');
-        // }, 2000);
-      }
+
+      const result = await axios({
+        method: 'POST',
+        url: `${HOST_API}/promo`,
+        data: body,
+      });
+      setLoading(false);
+      setPicture(false);
+      Toast.show({
+        type: 'success',
+        text1: 'New promo has been added! 🙌',
+      });
+      resetHandler();
+      // setTimeout(() => {
+      //   navigation.navigate('Profile');
+      // }, 2000);
     } catch (error) {
       setLoading(false);
       console.error(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `Oopss ${error.response.data?.err.msg} 😓`,
       });
     }
   };
   const resetHandler = () => {
-    setBody({name: '', price: '', details: '', categories_id: ''});
+    setBody({
+      ...body,
+      name: false,
+      code: false,
+      discount: false,
+      description: false,
+      date_end: false,
+    });
     setPicture(false);
   };
   return (
@@ -204,16 +192,16 @@ const AddPromoPage = ({navigation}) => {
           </View>
 
           <View style={{paddingLeft: 20, paddingRight: 20}}>
-            <Text style={styles.inputName}>Price:</Text>
+            <Text style={styles.inputName}>Code:</Text>
             <TextInput
               onChangeText={value =>
                 setBody({
                   ...body,
-                  price: value,
+                  code: value,
                 })
               }
-              keyboardType="number-pad"
-              placeholder="Enter product price"
+              // keyboardType="number-pad"
+              placeholder="Enter code promo"
               placeholderTextColor={'rgba(151, 151, 151, 1)'}
               style={{
                 fontFamily: 'Poppins-Regular',
@@ -229,7 +217,7 @@ const AddPromoPage = ({navigation}) => {
               onChangeText={value =>
                 setBody({
                   ...body,
-                  price: value,
+                  discount: value,
                 })
               }
               keyboardType="number-pad"
@@ -247,10 +235,11 @@ const AddPromoPage = ({navigation}) => {
           <View
             style={{paddingLeft: 20, paddingRight: 20, position: 'relative'}}>
             <Text style={styles.inputName}>Expired Date:</Text>
-            <Text
+            <TextInput
+              editable={false}
               onPress={() => setOpen(true)}
-              value={body.birthdate}
-              placeholder="Enter your birthdate"
+              value={body.date_end}
+              placeholder="Enter expired Date"
               placeholderTextColor={'rgba(151, 151, 151, 1)'}
               style={{
                 fontFamily: 'Poppins-Regular',
@@ -259,10 +248,11 @@ const AddPromoPage = ({navigation}) => {
                 paddingHorizontal: 5,
                 borderBottomWidth: 2,
                 borderBottomColor: 'rgba(151, 151, 151, 1)',
-              }}>
-              {body.birthdate}
-            </Text>
+              }}
+            />
+
             <Icon
+              onPress={() => setOpen(true)}
               name="calendar"
               size={20}
               color="rgba(151, 151, 151, 1)"
@@ -271,14 +261,14 @@ const AddPromoPage = ({navigation}) => {
             <DatePicker
               modal
               open={open}
-              date={body.birthdate ? new Date(body.birthdate) : new Date()}
+              date={body.date_end ? new Date(body.date_end) : new Date()}
               mode="date"
               onConfirm={dates => {
                 setOpen(false);
                 // console.log(moment(date).format('YYYY-MM-DD'))
                 setBody({
                   ...body,
-                  birthdate: moment(dates).format('DD/MM/YYYY'),
+                  date_end: moment(dates).format('YYYY-MM-DD'),
                 });
               }}
               onCancel={() => setOpen(false)}
@@ -294,7 +284,7 @@ const AddPromoPage = ({navigation}) => {
               onChangeText={value =>
                 setBody({
                   ...body,
-                  details: value,
+                  description: value,
                 })
               }
               placeholder="Enter promo descriptions"
@@ -376,7 +366,7 @@ const AddPromoPage = ({navigation}) => {
                     fontSize: 16,
                     color: '#fff',
                   }}>
-                  Add Product
+                  Add Promo
                 </Text>
               )}
             </TouchableOpacity>
