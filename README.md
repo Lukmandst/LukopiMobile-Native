@@ -85,7 +85,7 @@ $ npm run android
 
 ### Related Project
 
-[Lukopi API](https://lukopi-coffeeshop.herokuapp.com/)
-<a href="https://lukopi-coffeeshop.herokuapp.com/">
-  <img  align="right"  src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
+- [`Lukopi-BackEnd`](https://lukopi-coffeeshop.herokuapp.com/) <a href="https://lukopi-coffeeshop.herokuapp.com/">
+  <img  align="center"  src="https://www.herokucdn.com/deploy/button.svg" alt="Deploy">
 </a>
+
