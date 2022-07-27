@@ -74,12 +74,14 @@ $ npm run android
 
 <div style="display:flex, flex-direction: column" >
 
-<img src="src/assets/readme/home-ss.PNG" style="width: 600px">
-<img src="src/assets/readme/auth-ss.PNG" style="width: 600px">
-<img src="src/assets/readme/profile-ss.PNG" style="width: 600px">
-<img src="src/assets/readme/product-ss.PNG" style="width: 600px">
-<img src="src/assets/readme/loading-ss.PNG" style="width: 600px">
-<img src="src/assets/readme/cart-ss.PNG" style="width: 600px">
+<img src="documentation/1.jpg" style="width: 200px">
+<img src="documentation/2.jpg" style="width: 200px">
+<img src="documentation/3.jpg" style="width: 200px">
+<img src="documentation/4.jpg" style="width: 200px">
+<img src="documentation/5.jpg" style="width: 200px">
+<img src="documentation/6.jpg" style="width: 200px">
+<img src="documentation/7.jpg" style="width: 200px">
+<img src="documentation/8.jpg" style="width: 200px">
 
 </div>
 
