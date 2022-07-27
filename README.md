@@ -65,9 +65,10 @@ HOST_API=https://lukopi-coffeeshop.herokuapp.com
 
 ```sh
 $ npm start
+$ npm run android
 ```
 
-5. Tickitz Client App is Running
+5. Lukopi Mobile App is Running
 
 ### Preview
 
