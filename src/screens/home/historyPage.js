@@ -46,8 +46,7 @@ const HistoryPage = ({navigation}) => {
       setId([]);
       Toast.show({
         type: 'success',
-        text1: 'Request Success! 🙌',
-        text2: 'Transactions has been deleted 👋',
+        text1: 'Transactions has been deleted 👋',
       });
       setModal(false);
     } catch (error) {
@@ -55,8 +54,7 @@ const HistoryPage = ({navigation}) => {
       console.log(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `${error.response.data?.err.msg}`,
       });
     }
   };

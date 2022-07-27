@@ -51,7 +51,7 @@ const PaymentPage = ({navigation, route}) => {
       // Toast.show({
       //   type: 'success',
       //   text1: 'Transaction Success! 🙌',
-      //   text2: 'Thank you for your purchase! 👋',
+      //   text1: 'Thank you for your purchase! 👋',
       // });
       sendLocalNotification(
         'Transaction Success! 🙌',
@@ -59,15 +59,14 @@ const PaymentPage = ({navigation, route}) => {
       );
       setTimeout(() => {
         dispatch(resetCart());
-        navigation.navigate('history');
+        navigation.reset({index: 1, routes: [{name: 'HomeScreen'}]});
       }, 2000);
     } catch (error) {
       setLoading(false);
       console.error(error.response);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err}`,
+        text1: `${error.response.data?.err}`,
       });
     }
   };

@@ -51,14 +51,12 @@ const AddProductPage = ({navigation}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'Oopss You have not set any picture yet!😓',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+          text1: `${res.errorMessage} 😓`,
         });
         console.log(res.errorMessage);
       } else {
@@ -87,14 +85,12 @@ const AddProductPage = ({navigation}) => {
       if (res.didCancel) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'You have not set any picture yet!',
+          text1: 'Oopss You have not set any picture yet!😓',
         });
       } else if (res.errorCode) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: `${res.errorMessage}`,
+          text1: `${res.errorMessage} 😓`,
         });
         console.log(res.errorMessage);
       } else {
@@ -151,8 +147,7 @@ const AddProductPage = ({navigation}) => {
       console.error(error);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `Oopss ${error.response.data?.err.msg} 😓`,
       });
     }
   };

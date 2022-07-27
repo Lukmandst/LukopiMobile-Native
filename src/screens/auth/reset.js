@@ -39,8 +39,7 @@ const Reset = ({route, navigation}) => {
       setLoading(false);
       Toast.show({
         type: 'success',
-        text1: 'Request Success! 🙌',
-        text2: `${result.data.msg} 👋`,
+        text1: `${result.data.msg} 👋`,
       });
       setTimeout(() => {
         setConfirm(true);
@@ -50,8 +49,7 @@ const Reset = ({route, navigation}) => {
       // console.log(error.response.data.err.msg);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `Oopss 😓 ${error.response.data?.err.msg}`,
       });
     }
   };
@@ -60,8 +58,7 @@ const Reset = ({route, navigation}) => {
       if (newPass !== confirmPass) {
         Toast.show({
           type: 'error',
-          text1: 'Oopss 😓',
-          text2: 'Both passwords should be the same',
+          text1: 'Oopss 😓 Both passwords should be the same',
         });
       } else {
         setLoading(true);
@@ -73,8 +70,7 @@ const Reset = ({route, navigation}) => {
         setLoading(false);
         Toast.show({
           type: 'success',
-          text1: 'Request Success! 🙌',
-          text2: `${result.data.msg} 👋`,
+          text1: `${result.data.msg} 👋`,
         });
         setTimeout(() => {
           navigation.replace('signin');
@@ -84,8 +80,7 @@ const Reset = ({route, navigation}) => {
       setLoading(false);
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${error.response.data?.err.msg}`,
+        text1: `${error.response.data?.err.msg}`,
       });
     }
   };

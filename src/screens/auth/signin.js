@@ -33,14 +33,12 @@ const Signin = ({navigation}) => {
     if (!body.email.match(emailFormat)) {
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: 'Email format should be mail@mail.com !',
+        text1: 'Oopss 😓 Email format should be mail@mail.com !',
       });
     } else if (body.pass.length < 1) {
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: 'Password should not be empty !',
+        text1: 'Oopss 😓 Password should not be empty !',
       });
     } else {
       dispatch(authLogin(body));
@@ -53,8 +51,7 @@ const Signin = ({navigation}) => {
     if (errorMsg) {
       Toast.show({
         type: 'error',
-        text1: 'Oopss 😓',
-        text2: `${errorMsg}`,
+        text1: `${errorMsg}`,
       });
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
